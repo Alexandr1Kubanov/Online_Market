@@ -39,7 +39,7 @@ public class SQLiteAdapter {
     public int checkUser(String l, String p){
         if( baseOk)
         {
-            String query1= "select ID_User from User where Name='"+l+"' and Password ='"+p+"'";
+            String query1= "select ID_User from User where Name='"+l+"' and Password ='"+p+"' and lable = 1";
 
             try {
                 Statement statement = connection.createStatement();

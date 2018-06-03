@@ -67,6 +67,9 @@ public class Controller {
                 stage.setTitle("Таблица данных");
                 stage.setScene(new Scene(root1));
                 stage.show();
+
+                EditController edit = fxmlLoader.getController();
+                edit.idset(userId);
             }
         }
     }
