@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane alignment="TOP_CENTER" maxHeight="400.0" maxWidth="400.0" minHeight="189.0" minWidth="292.0" prefHeight="189.0" prefWidth="292.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane alignment="TOP_CENTER" maxHeight="400.0" maxWidth="400.0" minHeight="189.0" minWidth="292.0" prefHeight="189.0" prefWidth="292.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controllers.Controller">
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
     </columnConstraints>
@@ -22,10 +22,10 @@
             <children>
                 <Label layoutX="129.0" layoutY="11.0" text="Логин" />
                 <Label layoutX="125.0" layoutY="70.0" text="Пароль" />
-                <TextField fx:id="login" layoutX="72.0" layoutY="35.0" />
-                <Button fx:id="Enter" layoutX="72.0" layoutY="141.0" mnemonicParsing="false" text="Войти" />
+                <TextField fx:id="Login" alignment="CENTER" layoutX="72.0" layoutY="35.0" onAction="#ClickEnterLogin" promptText="Enter your login" />
+                <PasswordField fx:id="pwd" alignment="CENTER" layoutX="72.0" layoutY="96.0" onAction="#ClickEnter" promptText="Enter your password" />
+                <Button fx:id="Enter" layoutX="72.0" layoutY="141.0" mnemonicParsing="false" onAction="#Click" text="Войти" />
                 <Button fx:id="remember" layoutX="146.0" layoutY="141.0" mnemonicParsing="false" text="Вспомнить" />
-                <PasswordField fx:id="pwd" layoutX="72.0" layoutY="96.0" />
             </children>
         </AnchorPane>
     </children>
