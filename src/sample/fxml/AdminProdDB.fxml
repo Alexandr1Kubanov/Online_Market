@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/9.0.1" fx:controller="sample.Controllers.EditController">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controllers.EditController">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
   </columnConstraints>
@@ -19,18 +19,18 @@
    <children>
       <AnchorPane prefHeight="200.0" prefWidth="200.0">
          <children>
-            <Button layoutX="501.0" layoutY="91.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="83.0" text="+Add" fx:id="addButton" />
-            <Button layoutX="501.0" layoutY="157.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="83.0" text="-Delete" fx:id="deleteButton" />
-            <Button layoutX="501.0" layoutY="224.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="83.0" text="Edit" fx:id="editButton"/>
-            <TextField layoutX="22.0" layoutY="28.0" prefHeight="25.0" prefWidth="214.0" promptText="Enter text" fx:id="searchField"/>
-            <Button layoutX="254.0" layoutY="28.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="98.0" text="Search" fx:id="searchButton" />
-            <TableView layoutX="22.0" layoutY="70.0" prefHeight="308.0" prefWidth="464.0">
+            <Button fx:id="addButton" layoutX="501.0" layoutY="91.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="83.0" text="+Add" />
+            <Button fx:id="deleteButton" layoutX="501.0" layoutY="157.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="83.0" text="-Delete" />
+            <Button fx:id="editButton" layoutX="501.0" layoutY="224.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="83.0" text="Edit" />
+            <TextField fx:id="searchField" layoutX="22.0" layoutY="28.0" prefHeight="25.0" prefWidth="214.0" promptText="Enter text" />
+            <Button fx:id="searchButton" layoutX="254.0" layoutY="28.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="98.0" text="Search" />
+            <TableView fx:id="tableView" layoutX="22.0" layoutY="70.0" prefHeight="308.0" prefWidth="464.0">
               <columns>
-                <TableColumn prefWidth="95.0" text="C1" />
-                <TableColumn prefWidth="95.0" text="C2" />
-                  <TableColumn prefWidth="85.0" text="C3" />
-                  <TableColumn prefWidth="98.0" text="C4" />
-                  <TableColumn prefWidth="90.0" text="C5" />
+                <TableColumn prefWidth="95.0" text="Id Product" />
+                <TableColumn prefWidth="95.0" text="Name Product" />
+                  <TableColumn prefWidth="85.0" text="Old Price" />
+                  <TableColumn prefWidth="98.0" text="Unit" />
+                  <TableColumn prefWidth="90.0" text="Presence" />
               </columns>
             </TableView>
          </children>
