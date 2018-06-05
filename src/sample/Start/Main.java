@@ -10,9 +10,10 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("../fxml/LoginForm.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("../fxml/LoginFormDB.fxml"));
         primaryStage.setTitle("Admin");
         primaryStage.setScene(new Scene(root, 352, 281));
+        root.getStylesheets().add("../fmxl/main.css");
         primaryStage.show();
     }
 
