@@ -20,6 +20,7 @@ public class Controller {
 
     int userId;
 
+
     @FXML
     TextField login;
     @FXML
@@ -65,7 +66,8 @@ public class Controller {
                 stage = new Stage();
                 stage.initModality(Modality.APPLICATION_MODAL);
                 stage.setTitle("Таблица данных");
-                stage.setScene(new Scene(root1));
+                Scene scene = new Scene(root1);
+                stage.setScene(scene);
                 stage.show();
 
                 EditController edit = fxmlLoader.getController();

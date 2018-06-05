@@ -5,35 +5,24 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.RowConstraints?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controllers.EditController">
-  <columnConstraints>
-    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-  </columnConstraints>
-  <rowConstraints>
-    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-  </rowConstraints>
+
+<AnchorPane prefHeight="457.0" prefWidth="597.0" style="-fx-background-color: #757575;" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controllers.EditController">
    <children>
-      <AnchorPane prefHeight="200.0" prefWidth="200.0">
-         <children>
-            <Button fx:id="addButton" layoutX="501.0" layoutY="91.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="83.0" text="+Add" />
-            <Button fx:id="deleteButton" layoutX="501.0" layoutY="157.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="83.0" text="-Delete" />
-            <Button fx:id="editButton" layoutX="501.0" layoutY="224.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="83.0" text="Edit" />
-            <TextField fx:id="searchField" layoutX="22.0" layoutY="28.0" prefHeight="25.0" prefWidth="214.0" promptText="Enter text" />
-            <Button fx:id="searchButton" layoutX="254.0" layoutY="28.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="98.0" text="Search" />
-            <TableView fx:id="tableView" layoutX="22.0" layoutY="70.0" prefHeight="308.0" prefWidth="464.0">
-              <columns>
-                <TableColumn prefWidth="95.0" text="Id Product" />
-                <TableColumn prefWidth="95.0" text="Name Product" />
-                  <TableColumn prefWidth="85.0" text="Old Price" />
-                  <TableColumn prefWidth="98.0" text="Unit" />
-                  <TableColumn prefWidth="90.0" text="Presence" />
-              </columns>
-            </TableView>
-         </children>
-      </AnchorPane>
+
+      <Button fx:id="addButton" styleClass="addButton" layoutX="501.0" layoutY="91.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="83.0" text="+Add" AnchorPane.rightAnchor="13.0" AnchorPane.topAnchor="20.0" />
+      <Button fx:id="deleteButton" layoutX="501.0" layoutY="157.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="83.0" text="-Delete" AnchorPane.rightAnchor="13.0" AnchorPane.topAnchor="80.0" />
+      <Button fx:id="editButton" layoutX="501.0" layoutY="224.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="83.0" text="Edit" AnchorPane.rightAnchor="13.0" AnchorPane.topAnchor="140.0" />
+      <TextField fx:id="searchField" layoutX="22.0" layoutY="28.0" prefHeight="25.0" prefWidth="214.0" promptText="Enter text" AnchorPane.bottomAnchor="20.0" />
+      <Button fx:id="searchButton" layoutX="254.0" layoutY="28.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="98.0" text="Search" AnchorPane.bottomAnchor="20.0" />
+      <TableView fx:id="tableView" layoutX="22.0" layoutY="70.0" prefHeight="374.0" prefWidth="464.0" AnchorPane.bottomAnchor="63.0" AnchorPane.leftAnchor="22.0" AnchorPane.rightAnchor="111.0" AnchorPane.topAnchor="20.0">
+        <columns>
+          <TableColumn prefWidth="95.0" text="Id Product" />
+          <TableColumn prefWidth="95.0" text="Name Product" />
+            <TableColumn prefWidth="85.0" text="Old Price" />
+            <TableColumn prefWidth="98.0" text="Unit" />
+            <TableColumn prefWidth="90.0" text="Presence" />
+        </columns>
+      </TableView>
    </children>
-</GridPane>
+</AnchorPane>
