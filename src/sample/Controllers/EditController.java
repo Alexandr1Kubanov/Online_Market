@@ -22,7 +22,7 @@ public class EditController {
     @FXML
     TableView <Product> tableProduct;
 
-    private ObservableList<Product> AddData= FXCollections.observableArrayList();
+   // private ObservableList<Product> AddData= FXCollections.observableArrayList();
 
     public void idset(int a){
         System.out.println(a);

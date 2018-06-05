@@ -21,19 +21,19 @@ public class Controller {
     int userId;
 
     @FXML
-    TextField Login;
+    TextField login;
     @FXML
-    PasswordField pwd;
+    PasswordField password;
     @FXML
-    Button Enter;
+    Button enter;
     @FXML
-    Button remember;
+    Button escape;
 
 
     public void Click()  {
 
-        String fromPwd = pwd.getText().toString();
-        String fromLogin = Login.getText().toString();
+        String fromPwd = password.getText().toString();
+        String fromLogin = login.getText().toString();
 
         if(!fromLogin.isEmpty()&&!fromPwd.isEmpty()) {
             SQLiteAdapter sqLiteAdapter = new SQLiteAdapter();
@@ -46,13 +46,13 @@ public class Controller {
                 alert.setTitle("Ошибка ввода данных");
                 alert.setHeaderText("Вы ввели не правельные логин и пароль");
                 alert.setContentText("Попробуйте ещё раз");
-                pwd.setText("");
-                Login.setText(fromLogin);
+                password.setText("");
+                login.setText(fromLogin);
                 alert.show();
             }
             else
             {
-                Stage stage = (Stage) Enter.getScene().getWindow();
+                Stage stage = (Stage) enter.getScene().getWindow();
                 stage.close();
 
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../fxml/AdminProdDB.fxml"));
@@ -74,11 +74,15 @@ public class Controller {
         }
     }
     public  void ClickEnterLogin(){
-        pwd.requestFocus();
+        password.requestFocus();
     }
 
     public void ClickEnter() {
        Click();
+    }
+    public  void escapeButton(){
+        Stage stage = (Stage) login.getScene().getWindow();
+        stage.close();
     }
 
 

@@ -9,15 +9,17 @@ public class Product {
     private DoubleProperty oldPrice;
     private IntegerProperty unit;
     private BooleanProperty presence;
+    private BooleanProperty sale;
 
     public  Product(int idProduct, String nameProduct,
-                    double oldPrice,int unit,boolean presence){
+                    double oldPrice,int unit,boolean presence,boolean sale){
 
         this.idProduct = new SimpleIntegerProperty(idProduct);
         this.nameProduct = new SimpleStringProperty(nameProduct);
         this.oldPrice = new SimpleDoubleProperty(oldPrice);
         this.unit = new SimpleIntegerProperty(unit);
         this.presence = new SimpleBooleanProperty(presence);
+        this.sale = new SimpleBooleanProperty(sale);
 
     }
 
@@ -53,7 +55,7 @@ public class Product {
         this.unit = unit;
     }
 
-    public BooleanProperty isPresence() {
+    public BooleanProperty getPresence() {
         return presence;
     }
 
@@ -61,6 +63,12 @@ public class Product {
         this.presence = presence;
     }
 
+    public BooleanProperty getSale(){
+        return sale;
+    }
 
+    public void setSale(BooleanProperty sale) {
+        this.sale=sale;
+    }
 }
 
