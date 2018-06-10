@@ -6,15 +6,15 @@
 <?import javafx.scene.layout.AnchorPane?>
 
 <AnchorPane prefHeight="600.0" prefWidth="700.0" style="-fx-background-color: #757575;" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controllers.EditController">
-   <children>
-      <Button fx:id="addButton" layoutX="39.0" layoutY="19.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="90.0" style="fx-" text="+Add" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="604.0" AnchorPane.topAnchor="19.0" />
-      <Button fx:id="deleteButton" layoutX="113.0" layoutY="19.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="90.0" text="-Delete" AnchorPane.leftAnchor="110.0" AnchorPane.rightAnchor="514.0" AnchorPane.topAnchor="19.0" />
-      <Button fx:id="editButton" layoutX="198.0" layoutY="19.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="90.0" text="Edit" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="424.0" AnchorPane.topAnchor="19.0" />
-      <TextField fx:id="searchField" layoutX="22.0" layoutY="28.0" prefHeight="25.0" prefWidth="214.0" promptText="Enter text" AnchorPane.bottomAnchor="20.0" />
-      <Button fx:id="searchButton" layoutX="254.0" layoutY="28.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="98.0" text="Search" AnchorPane.bottomAnchor="20.0" />
-      <TableView fx:id="tableView" layoutX="22.0" layoutY="70.0" prefHeight="457.0" prefWidth="652.0" AnchorPane.bottomAnchor="63.0" AnchorPane.leftAnchor="22.0" AnchorPane.rightAnchor="22.0" AnchorPane.topAnchor="80.0" />
-      <Button fx:id="ProductButton" layoutX="303.0" layoutY="27.0" mnemonicParsing="false" onAction="#select" text="Product" />
-      <Button fx:id="UserButton" layoutX="373.0" layoutY="27.0" mnemonicParsing="false" onAction="#select" prefHeight="25.0" prefWidth="58.0" text="User" />
-      <Button fx:id="OrderButton" layoutX="443.0" layoutY="27.0" mnemonicParsing="false" onAction="#select" prefHeight="25.0" prefWidth="58.0" text="Order" />
-   </children>
+    <children>
+        <Button fx:id="addButton" layoutX="39.0" layoutY="19.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="90.0" text="+Add" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="604.0" AnchorPane.topAnchor="19.0" />
+        <Button fx:id="deleteButton" layoutX="113.0" layoutY="19.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="90.0" text="-Delete" AnchorPane.leftAnchor="110.0" AnchorPane.rightAnchor="514.0" AnchorPane.topAnchor="19.0" />
+        <Button fx:id="editButton" layoutX="198.0" layoutY="19.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="90.0" text="Edit" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="424.0" AnchorPane.topAnchor="19.0" />
+        <TextField fx:id="searchField" layoutX="22.0" layoutY="28.0" prefHeight="25.0" prefWidth="214.0" promptText="Enter text" AnchorPane.bottomAnchor="20.0" />
+        <Button fx:id="searchButton" layoutX="254.0" layoutY="28.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="98.0" text="Search" AnchorPane.bottomAnchor="20.0" />
+        <TableView fx:id="tableView" layoutX="22.0" layoutY="70.0" prefHeight="457.0" prefWidth="652.0" AnchorPane.bottomAnchor="63.0" AnchorPane.leftAnchor="22.0" AnchorPane.rightAnchor="22.0" AnchorPane.topAnchor="80.0" />
+        <Button fx:id="ProductButton" layoutX="303.0" layoutY="27.0" mnemonicParsing="false" onAction="#select" text="Product" />
+        <Button fx:id="UserButton" layoutX="373.0" layoutY="27.0" mnemonicParsing="false" onAction="#select" prefHeight="25.0" prefWidth="58.0" text="User" />
+        <Button fx:id="OrderButton" layoutX="443.0" layoutY="27.0" mnemonicParsing="false" onAction="#select" prefHeight="25.0" prefWidth="58.0" text="Order" />
+    </children>
 </AnchorPane>

@@ -9,10 +9,10 @@ import javafx.stage.Stage;
 public class Main extends Application {
 
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("../fxml/LoginFormDB.fxml"));
         primaryStage.setTitle("Admin");
-        Scene scene = new Scene(root,380, 275);
+        Scene scene = new Scene(root, 380, 275);
         primaryStage.setScene(scene);
         primaryStage.show();
     }

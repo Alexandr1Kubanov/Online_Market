@@ -9,6 +9,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import sample.SQLiteAdapter.SQLiteAdapter;
 import sample.Universal;
+
 import java.util.ArrayList;
 
 
@@ -30,56 +31,55 @@ public class EditController {
     @FXML
     Button OrderButton;
     @FXML
-    TableView  tableView;
+    TableView tableView;
 
 
-
-    public void idset(int a){
+    public void idset(int a) {
         System.out.println(a);
     }
 
     public void getItemButton(String str) {
         SQLiteAdapter sql = new SQLiteAdapter();
         ArrayList<String> list = new ArrayList<>();
-        ObservableList<Universal> observableList = sql.AddTableView(str,list);
-        columnsAdd(tableView,list);
+        ObservableList<Universal> observableList = sql.AddTableView(str, list);
+        columnsAdd(tableView, list);
         tableView.setItems(observableList);
     }
 
-    private void columnsAdd(TableView tv,ArrayList list){
+    private void columnsAdd(TableView tv, ArrayList list) {
         tv.getColumns().clear();
-        for(int i = 0; i<list.size();i++){
-            TableColumn<Universal,String> col= new TableColumn<>();
+        for (int i = 0; i < list.size(); i++) {
+            TableColumn<Universal, String> col = new TableColumn<>();
             int fin = i;
-            col.setCellValueFactory((TableColumn.CellDataFeatures<Universal,String> column)->{
+            col.setCellValueFactory((TableColumn.CellDataFeatures<Universal, String> column) -> {
                 return column.getValue().property(fin);
             });
             col.setText((String) list.get(i));
             tv.getColumns().add(col);
         }
-        }
+    }
 
 
     public void select(ActionEvent actionEvent) {
-            Object source = actionEvent.getSource();
+        Object source = actionEvent.getSource();
 
-            if(!(source instanceof Button)){
-                return;
-            }
-            Button clickedButton = (Button) source;
-            switch (clickedButton.getId()){
-                case "ProductButton":
-                    getItemButton("Select * From Product");
-                    break;
-                case "UserButton":
-                    getItemButton("Select * From User");
-                    break;
-                case "OrderButton":
-                    getItemButton("Select * From AllOrder");
-                    break;
-            }
+        if (!(source instanceof Button)) {
+            return;
+        }
+        Button clickedButton = (Button) source;
+        switch (clickedButton.getId()) {
+            case "ProductButton":
+                getItemButton("Select * From Product");
+                break;
+            case "UserButton":
+                getItemButton("Select * From User");
+                break;
+            case "OrderButton":
+                getItemButton("Select * From AllOrder");
+                break;
         }
     }
+}
 
 
 
