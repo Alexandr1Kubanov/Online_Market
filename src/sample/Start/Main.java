@@ -12,8 +12,8 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("../fxml/LoginFormDB.fxml"));
         primaryStage.setTitle("Admin");
-        primaryStage.setScene(new Scene(root, 352, 281));
-        root.getStylesheets().add("../fmxl/main.css");
+        Scene scene = new Scene(root,380, 275);
+        primaryStage.setScene(scene);
         primaryStage.show();
     }
 

@@ -9,7 +9,7 @@
       <entry name="!?*.scala" />
       <entry name="!?*.flex" />
       <entry name="!?*.kt" />
-      <entry name="!?*.css" />
+      <entry name="!?*.clj" />
     </wildcardResourcePatterns>
   </component>
 </project>

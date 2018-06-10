@@ -1,10 +1,11 @@
 package sample.SQLiteAdapter;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import sample.Universal;
+
 
 import java.sql.*;
+import java.util.ArrayList;
 
 public class SQLiteAdapter {
 
@@ -59,6 +60,35 @@ public class SQLiteAdapter {
         }
         return -1;
     }
+
+    public ObservableList<Universal> AddTableView(String str, ArrayList nameColumns) {
+        ObservableList<Universal> PL = FXCollections.observableArrayList();
+        if(baseOk){
+            String query = str;
+            try {
+                Statement statement = connection.createStatement();
+                ResultSet resultSet = statement.executeQuery(query);
+                int count = resultSet.getMetaData().getColumnCount();
+                for(int i = 2; i<= count;i++){
+                    nameColumns.add(resultSet.getMetaData().getColumnName(i));
+                }
+                while(resultSet.next()){
+                    PL.add(new Universal(resultSet,count));
+                }
+            }
+            catch (SQLException ex){
+                ex.printStackTrace();
+            }
+            finally {
+                closeConnetion();
+            }
+        }
+        return PL;
+    }
+
+
+
+
 
 
 }
