@@ -64,7 +64,7 @@ public class Controller {
                     e.printStackTrace();
                 }
                 stage = new Stage();
-                stage.initModality(Modality.APPLICATION_MODAL);
+                stage.initModality(Modality.NONE);
                 stage.setTitle("Таблица данных");
                 Scene scene = new Scene(root1);
                 stage.setScene(scene);
