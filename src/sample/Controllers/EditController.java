@@ -35,7 +35,7 @@ public class EditController {
     @FXML
     Label categories;
 
-
+    //лист команд для запросов
     private ArrayList<String> quareSql=new ArrayList<>();
     private void commandSqllist(){
         quareSql.add("Select ID_Product,Name_Product as 'Наименование Продукта' ," +
@@ -45,6 +45,13 @@ public class EditController {
         quareSql.add("Select User.ID_User,Name as 'Имя',Number_Phone as 'Номер Телефона'," +
                 "City as 'Город',Street as 'Улица',House as 'Номер Дома',Apartment as 'Номер Квартиры' " +
                 "From User,Addresses Where User.ID_User=Addresses.id_user");
+
+        quareSql.add("Select ID_Order, User.Name as 'Имя',Product.Name_Product as 'Наименование Продукта'," +
+                "Count as 'Количество',date_order as 'Дата Заказа',AllOrder.phone_user as 'Номер Телефона'" +
+                ",AllOrder.Total_Price as 'Общая цена',AllOrder.Total_Unit as 'Общее количество' " +
+                "From AllOrder,User,Addresses,Product " +
+                "where AllOrder.id_user=User.ID_User and Addresses.id_user = User.ID_User " +
+                "and AllOrder.id_product = Product.ID_Product");
 
     }
     public void idset(int a) {
@@ -129,7 +136,6 @@ public class EditController {
             case "ProductButton":
                 getItemButton(quareSql.get(0));
                 comboboxadd("Select * From Categories");
-
                 editButton.setVisible(false);
                 deleteButton.setVisible(false);
                 break;
@@ -141,8 +147,7 @@ public class EditController {
                 categories.setVisible(false);
                 break;
             case "OrderButton":
-                getItemButton("Select * From AllOrder");
-
+                getItemButton(quareSql.get(2));
                 combobox.setVisible(false);
                 categories.setVisible(false);
                 editButton.setVisible(false);
