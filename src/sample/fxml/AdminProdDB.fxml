@@ -48,8 +48,8 @@
               <Button fx:id="OrderButton" mnemonicParsing="false" onAction="#select" prefHeight="25.0" prefWidth="58.0" text="Order" AnchorPane.rightAnchor="20.0" />
          </children>
       </AnchorPane>
-      <ComboBox fx:id="combobox" layoutX="131.0" layoutY="39.0" prefHeight="25.0" prefWidth="227.0" />
-      <Label fx:id="categories" layoutX="365.0" layoutY="39.0" prefHeight="25.0" prefWidth="68.0" text="Categories" textFill="WHITE">
+      <ComboBox fx:id="combobox" layoutX="131.0" layoutY="39.0" prefHeight="25.0" prefWidth="227.0" visible="false" />
+      <Label fx:id="categories" layoutX="365.0" layoutY="39.0" prefHeight="25.0" prefWidth="68.0" text="Categories" textFill="WHITE" visible="false">
          <font>
             <Font name="System Bold Italic" size="12.0" />
          </font>

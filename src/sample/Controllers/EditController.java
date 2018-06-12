@@ -36,6 +36,17 @@ public class EditController {
     Label categories;
 
 
+    private ArrayList<String> quareSql=new ArrayList<>();
+    private void commandSqllist(){
+        quareSql.add("Select ID_Product,Name_Product as 'Наименование Продукта' ," +
+                "Old_Price as 'Старая Цена',Unit as 'Количество'," +
+                "Presence as 'Наличие',Sale as 'Акция' From Product");
+
+        quareSql.add("Select User.ID_User,Name as 'Имя',Number_Phone as 'Номер Телефона'," +
+                "City as 'Город',Street as 'Улица',House as 'Номер Дома',Apartment as 'Номер Квартиры' " +
+                "From User,Addresses Where User.ID_User=Addresses.id_user");
+
+    }
     public void idset(int a) {
 
     }
@@ -53,11 +64,14 @@ public class EditController {
 
 
     public void initialize() {
-        tableView.getSelectionModel().selectedItemProperty().addListener((observable, oldvalue, newvalue) ->
-                deleteButton.setVisible(true));
-        tableView.getSelectionModel().selectedItemProperty().addListener((observable, oldvalue, newvalue) ->
-                editButton.setVisible(true));
-        tableView.setEditable(false);
+        tableView.getSelectionModel().selectedItemProperty().addListener((observable, oldvalue, newvalue) ->{
+            editButton.setVisible(true);
+            deleteButton.setVisible(true);
+            });
+        commandSqllist();
+        combobox.setVisible(false);
+
+
     }
 
     //метод получает ссылку на TableView для заполнения его данными из полученного листа
@@ -86,8 +100,9 @@ public class EditController {
         SQLiteAdapter sql = new SQLiteAdapter();
         ArrayList<String> list = new ArrayList<>();
         ObservableList<Universal> observableList = sql.AddTableView(str, list);
-        for (int i = 1; i <= observableList.size(); i++)
+        for (int i = 0; i <= observableList.size()-1; i++) {
             combobox.getItems().add(observableList.get(i).property(0).getValue());
+        }
 
     }
 
@@ -112,15 +127,14 @@ public class EditController {
         Button clickedButton = (Button) source;
         switch (clickedButton.getId()) {
             case "ProductButton":
-                getItemButton("Select * From Product");
+                getItemButton(quareSql.get(0));
                 comboboxadd("Select * From Categories");
 
                 editButton.setVisible(false);
                 deleteButton.setVisible(false);
                 break;
             case "UserButton":
-                getItemButton("Select * From User");
-
+                getItemButton(quareSql.get(1));
                 editButton.setVisible(false);
                 deleteButton.setVisible(false);
                 combobox.setVisible(false);
