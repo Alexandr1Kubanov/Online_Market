@@ -80,7 +80,7 @@ public class SQLiteAdapter {
         return PL;
     }
 
-    public void DeleteFromBaseById(String str) {
+    public void FromBaseById(String str) {
         if (baseOk) {
             String query = str;
             try {
@@ -94,5 +94,6 @@ public class SQLiteAdapter {
         }
 
     }
+
 
 }
