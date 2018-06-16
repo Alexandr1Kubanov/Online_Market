@@ -35,6 +35,8 @@ public class EditController {
     @FXML
     Label categories;
 
+    private int getID;
+
     //лист команд для запросов
     private ArrayList<String> quareSql=new ArrayList<>();
     private void commandSqllist(){
@@ -52,6 +54,7 @@ public class EditController {
                 "From AllOrder,User,Addresses,Product " +
                 "where AllOrder.id_user=User.ID_User and Addresses.id_user = User.ID_User " +
                 "and AllOrder.id_product = Product.ID_Product");
+        quareSql.add("Delete From Product Where ID_Product =");
 
     }
     public void idset(int a) {
@@ -67,6 +70,8 @@ public class EditController {
         columnsAdd(tableView, list);
         tableView.setItems(observableList);
 
+
+
     }
 
 
@@ -77,7 +82,6 @@ public class EditController {
             });
         commandSqllist();
         combobox.setVisible(false);
-
 
     }
 
@@ -113,10 +117,26 @@ public class EditController {
 
     }
 
-    //пока что заглушка
-    public void buttonAction() {
+    //реализация кнопки Удалить
+    @FXML
+    private void del(){
+        //получаем ID выбранного поля
+        getID=((Universal)tableView.getSelectionModel().getSelectedItem()).getId();
+        //присваиваем переменной quareSqldel запрос на удаление и ID выбранного поля
+        String quareSqldel = quareSql.get(3)+getID;
+        //Подключаемся к БД
+        SQLiteAdapter sql = new SQLiteAdapter();
+        //Передаем собранный запрос в БД
+        sql.DeleteFromBaseById(quareSqldel);
+        //Отрисовываем таблицу с новыми данными
+        ProductButton.fire();
     }
+    //реализация кнопки Редактировать
+    @FXML
+    private void edit(){
+        getID=((Universal)tableView.getSelectionModel().getSelectedItem()).getId();
 
+    }
 
     //метод обработки нажатых пользователем Button
     @FXML

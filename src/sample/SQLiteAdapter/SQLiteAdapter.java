@@ -80,5 +80,19 @@ public class SQLiteAdapter {
         return PL;
     }
 
+    public void DeleteFromBaseById(String str) {
+        if (baseOk) {
+            String query = str;
+            try {
+                Statement statement = connection.createStatement();
+                statement.execute(query);
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            } finally {
+                closeConnetion();
+            }
+        }
+
+    }
 
 }

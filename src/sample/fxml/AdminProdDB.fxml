@@ -36,8 +36,8 @@
       <AnchorPane layoutY="77.0" prefHeight="467.0" prefWidth="121.0" AnchorPane.leftAnchor="5.0">
          <children>
               <Button fx:id="addButton" layoutX="21.0" layoutY="33.0" mnemonicParsing="false" onAction="#select" prefHeight="40.0" prefWidth="80.0" text="+Add" AnchorPane.leftAnchor="21.0" AnchorPane.topAnchor="33.0" />
-              <Button fx:id="deleteButton" layoutX="20.0" layoutY="91.0" mnemonicParsing="false" onAction="#buttonAction" prefHeight="40.0" prefWidth="80.0" text="-Delete" visible="false" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="99.0" />
-              <Button fx:id="editButton" layoutX="20.0" layoutY="150.0" mnemonicParsing="false" onAction="#buttonAction" prefHeight="40.0" prefWidth="80.0" text="Edit" visible="false" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="166.0" />
+              <Button fx:id="deleteButton" layoutX="20.0" layoutY="91.0" mnemonicParsing="false" onAction="#del" prefHeight="40.0" prefWidth="80.0" text="-Delete" visible="false" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="99.0" />
+              <Button fx:id="editButton" layoutX="20.0" layoutY="150.0" mnemonicParsing="false" onAction="#edit" prefHeight="40.0" prefWidth="80.0" text="Edit" visible="false" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="166.0" />
          </children>
       </AnchorPane>
       <AnchorPane layoutX="423.0" layoutY="39.0" prefHeight="32.0" prefWidth="227.0" AnchorPane.rightAnchor="28.0">
