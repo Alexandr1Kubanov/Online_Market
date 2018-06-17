@@ -67,7 +67,7 @@ public class EditController {
         quareSql.add("Select User.ID_User,Name as 'Имя',Number_Phone as 'Номер Телефона'," +
                 "City as 'Город',Street as 'Улица',House as 'Номер Дома',Apartment as 'Номер Квартиры' " +
                 "From User,Addresses Where User.ID_User=Addresses.id_user");
-        
+
         quareSql.add("Select ID_Order,User.Name as 'Имя',Product.Name_Product as 'Наименование Продукта',AllOrder.Count as 'Количество',date_order as 'Дата Заказа',AllOrder.phone_user as 'Номер Телефона',AllOrder.Total_Price as 'Общая цена',AllOrder.Total_Unit as 'Общее количество' From AllOrder,User,Addresses,Product where AllOrder.id_user=User.ID_User and Addresses.id_user = User.ID_User and AllOrder.id_product = Product.ID_Product");
 
 
