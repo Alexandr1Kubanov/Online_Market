@@ -52,25 +52,24 @@ public class EditController {
 
     //лист команд для запросов
     private ArrayList<String> quareSql=new ArrayList<>();
+    private ArrayList<String> quareSqlDelete=new ArrayList<>();
     private CollationElementIterator label;
 
     private void commandSqllist(){
+        quareSqlDelete.add("Delete From Product Where ID_Product =");
+        quareSqlDelete.add("Delete From User Where ID_User =");
+        quareSqlDelete.add("Delete From AllOrder Where ID_Order =");
+
         quareSql.add("Select ID_Product,Name_Product as 'Наименование Продукта' ," +
-                "Old_Price as 'Старая Цена',Unit as 'Количество'," +
-                "Presence as 'Наличие',Sale as 'Акция' From Product");
+                "Count as 'Количество',Existence as 'Налицие',Sale as 'Распродажа'," +
+                "Producing_country as 'Страна производитель' From Product");
 
         quareSql.add("Select User.ID_User,Name as 'Имя',Number_Phone as 'Номер Телефона'," +
                 "City as 'Город',Street as 'Улица',House as 'Номер Дома',Apartment as 'Номер Квартиры' " +
                 "From User,Addresses Where User.ID_User=Addresses.id_user");
+        
+        quareSql.add("Select ID_Order,User.Name as 'Имя',Product.Name_Product as 'Наименование Продукта',AllOrder.Count as 'Количество',date_order as 'Дата Заказа',AllOrder.phone_user as 'Номер Телефона',AllOrder.Total_Price as 'Общая цена',AllOrder.Total_Unit as 'Общее количество' From AllOrder,User,Addresses,Product where AllOrder.id_user=User.ID_User and Addresses.id_user = User.ID_User and AllOrder.id_product = Product.ID_Product");
 
-        quareSql.add("Select ID_Order, User.Name as 'Имя',Product.Name_Product as 'Наименование Продукта'," +
-                "Count as 'Количество',date_order as 'Дата Заказа',AllOrder.phone_user as 'Номер Телефона'" +
-                ",AllOrder.Total_Price as 'Общая цена',AllOrder.Total_Unit as 'Общее количество' " +
-                "From AllOrder,User,Addresses,Product " +
-                "where AllOrder.id_user=User.ID_User and Addresses.id_user = User.ID_User " +
-                "and AllOrder.id_product = Product.ID_Product");
-
-        quareSql.add("Delete From Product Where ID_Product =");
 
         quareSql.add("Insert Into Product(ID_Product,Name_Product,Old_Price,Rating,Unit,Presence,Sale)Values(");
 
@@ -138,13 +137,26 @@ public class EditController {
     //реализация кнопки Удалить
     @FXML
     private void del(){
-        System.out.println(((TableColumn)tableView.getColumns().get(0)).getText());
-        if (((TableColumn)tableView.getColumns().get(0)).getText().equals(new String("Имя"))){
 
+        //Проверка на соответсвие имени первых столбцов tableview и удаление записей
+        if (((TableColumn)tableView.getColumns().get(0)).getText().equals(new String("Наименование Продукта"))&&
+                ((TableColumn)tableView.getColumns().get(1)).getText().equals(new String("Количество"))){
+            AlertAndDelete(0);//метод вывода сообщения на удаления записи
+            ProductButton.fire();
+        }
+        if (((TableColumn)tableView.getColumns().get(0)).getText().equals(new String("Имя"))&&
+                ((TableColumn)tableView.getColumns().get(1)).getText().equals(new String("Номер Телефона"))){
+            AlertAndDelete(1);//метод вывода сообщения на удаления записи
+            UserButton.fire();
+        }
+        if (((TableColumn)tableView.getColumns().get(0)).getText().equals(new String("Имя"))&&
+                ((TableColumn)tableView.getColumns().get(1)).getText().equals(new String("Наименование Продукта"))){
+            AlertAndDelete(2);//метод вывода сообщения на удаления записи
+            OrderButton.fire();
         }
 
         //Всплывающее окно перед удалением
-        Alert alert = new Alert(AlertType.CONFIRMATION);
+        /*Alert alert = new Alert(AlertType.CONFIRMATION);
         alert.setHeaderText("Внимание");
         alert.setContentText("Вы уверены,что хотите удалить запись?");
         alert.setTitle("Удаление");
@@ -173,7 +185,7 @@ public class EditController {
             } else if (option.get() == No) {
                 this.label.setText("Cancelled!");
             }
-        }
+        }*/
     }
 
     @FXML
@@ -183,7 +195,7 @@ public class EditController {
         editButton.setVisible(false);
         deleteButton.setVisible(false);
 
-        getID=((Universal)tableView.getSelectionModel().getSelectedItem()).getId();
+        //getID=((Universal)tableView.getSelectionModel().getSelectedItem()).getId();
 
         try {
             newScene("../fxml/EditWindow.fxml");
@@ -250,6 +262,39 @@ public class EditController {
         }
     }
 
+    //метод вывода сообщения на удаления записи из tableview и БД(передается номер команды quaresqlDelete)
+    public void AlertAndDelete(int num){
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.setHeaderText("Внимание");
+        alert.setContentText("Вы уверены,что хотите удалить запись?");
+        alert.setTitle("Удаление");
+        ButtonType Yes = new ButtonType("ДА");
+        ButtonType No= new ButtonType("Нет");
+        alert.getButtonTypes().clear();
+        alert.getButtonTypes().addAll(Yes,No);
+        Optional<ButtonType> option = alert.showAndWait();
+
+        if (option.get() == null) {
+            this.label.setText("Не выбрано!");
+        } else if (option.get() == Yes) {
+            //получаем ID выбранного поля
+            getID = ((Universal) tableView.getSelectionModel().getSelectedItem()).getId();
+            if (getID != 0) {
+                //присваиваем переменной quareSqldel запрос на удаление и ID выбранного поля
+                String quareSqldel = quareSqlDelete.get(num) + getID;
+                //Подключаемся к БД
+                SQLiteAdapter sql = new SQLiteAdapter();
+                //Передаем собранный запрос в БД
+                sql.FromBaseById(quareSqldel);
+                //Отрисовываем таблицу с новыми данными
+            } else if (option.get() == No) {
+                this.label.setText("Cancelled!");
+            }
+        }
+
+    }
+
+    //модальное окно для Редактирования и Добавления записей
     public void newScene(String str) throws IOException {
 
         Stage stage = (Stage) editButton.getScene().getWindow();
