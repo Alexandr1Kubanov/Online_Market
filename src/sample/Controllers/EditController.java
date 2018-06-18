@@ -53,6 +53,8 @@ public class EditController {
     //лист команд для запросов
     private ArrayList<String> quareSql=new ArrayList<>();
     private ArrayList<String> quareSqlDelete=new ArrayList<>();
+    private ArrayList<String> quareSqlSelect=new ArrayList<>();
+
     private CollationElementIterator label;
 
     private void commandSqllist(){
@@ -68,8 +70,15 @@ public class EditController {
                 "City as 'Город',Street as 'Улица',House as 'Номер Дома',Apartment as 'Номер Квартиры' " +
                 "From User,Addresses Where User.ID_User=Addresses.id_user");
 
-        quareSql.add("Select ID_Order,User.Name as 'Имя',Product.Name_Product as 'Наименование Продукта',AllOrder.Count as 'Количество',date_order as 'Дата Заказа',AllOrder.phone_user as 'Номер Телефона',AllOrder.Total_Price as 'Общая цена',AllOrder.Total_Unit as 'Общее количество' From AllOrder,User,Addresses,Product where AllOrder.id_user=User.ID_User and Addresses.id_user = User.ID_User and AllOrder.id_product = Product.ID_Product");
+        quareSqlSelect.add("Select ");
+        quareSql.add("Select AllOrder.ID_Order,User.Name,Product.Name_Product,AllOrder.Count," +
+                "AllOrder.date_order,User.Number_Phone,AllOrder.Total_Price," +
+                "AllOrder.Total_Unit,Addresses.City,Addresses.House,Addresses.Street " +
 
+                "From AllOrder INNER Join User ON AllOrder.id_user =User.ID_User " +
+
+                "Inner Join Addresses ON AllOrder.id_user = Addresses.id_user  " +
+                "Inner Join Product ON AllOrder.id_product = Product.ID_Product");
 
         quareSql.add("Insert Into Product(ID_Product,Name_Product,Old_Price,Rating,Unit,Presence,Sale)Values(");
 
@@ -124,14 +133,12 @@ public class EditController {
     //Заполнение ComboBox именами категорий продуктов из БД
     @FXML
     private void comboboxadd(String str) {
-        combobox.getItems().add("AllCategories");
         SQLiteAdapter sql = new SQLiteAdapter();
         ArrayList<String> list = new ArrayList<>();
         ObservableList<Universal> observableList = sql.AddTableView(str, list);
         for (int i = 0; i <= observableList.size()-1; i++) {
             combobox.getItems().add(observableList.get(i).property(0).getValue());
         }
-
     }
 
     //реализация кнопки Удалить
@@ -143,6 +150,7 @@ public class EditController {
                 ((TableColumn)tableView.getColumns().get(1)).getText().equals(new String("Количество"))){
             AlertAndDelete(0);//метод вывода сообщения на удаления записи
             ProductButton.fire();
+
         }
         if (((TableColumn)tableView.getColumns().get(0)).getText().equals(new String("Имя"))&&
                 ((TableColumn)tableView.getColumns().get(1)).getText().equals(new String("Номер Телефона"))){
@@ -226,9 +234,7 @@ public class EditController {
         combobox.setVisible(true);
         categories.setVisible(true);
 
-        if (!(source instanceof Button)) {
-            return;
-        }
+        if (!(source instanceof Button)) {return; }
 
         Button clickedButton = (Button) source;
         switch (clickedButton.getId()) {
@@ -237,6 +243,8 @@ public class EditController {
                 comboboxadd("Select * From Categories");
                 editButton.setVisible(false);
                 deleteButton.setVisible(false);
+                combobox.setValue("AllProduct");
+                combobox.setVisibleRowCount(5);
                 break;
             case "UserButton":
                 getItemButton(quareSql.get(1));
@@ -307,7 +315,13 @@ public class EditController {
         stage.setScene(scene);
         stage.show();
     }
-    
+
+
+    public void comboBoxSelected(ActionEvent actionEvent) {
+        combobox.getValue();
+
+
+    }
 
 }
 
