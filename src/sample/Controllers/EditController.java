@@ -58,10 +58,14 @@ public class EditController {
     private CollationElementIterator label;
 
     private void commandSqllist(){
+        //лист запросов на удаление из БД
         quareSqlDelete.add("Delete From Product Where ID_Product =");
         quareSqlDelete.add("Delete From User Where ID_User =");
         quareSqlDelete.add("Delete From AllOrder Where ID_Order =");
 
+        quareSqlSelect.add("Select ");
+
+        //лист Select запросов на выборку из таблиц БД
         quareSql.add("Select ID_Product,Name_Product as 'Наименование Продукта' ," +
                 "Count as 'Количество',Existence as 'Налицие',Sale as 'Распродажа'," +
                 "Producing_country as 'Страна производитель' From Product");
@@ -70,19 +74,17 @@ public class EditController {
                 "City as 'Город',Street as 'Улица',House as 'Номер Дома',Apartment as 'Номер Квартиры' " +
                 "From User,Addresses Where User.ID_User=Addresses.id_user");
 
-        quareSqlSelect.add("Select ");
-        quareSql.add("Select AllOrder.ID_Order,User.Name,Product.Name_Product,AllOrder.Count," +
-                "AllOrder.date_order,User.Number_Phone,AllOrder.Total_Price," +
-                "AllOrder.Total_Unit,Addresses.City,Addresses.House,Addresses.Street " +
-
+        quareSql.add("Select AllOrder.ID_Order,User.Name as 'ФИО',Product.Name_Product as 'Наименование Продукта',AllOrder.Count  as 'Количество'," +
+                "AllOrder.date_order as 'Дата заказа',AllOrder.Total_Price as 'Цена'," +
+                "AllOrder.Total_Unit,Addresses.City as 'Город',Addresses.Street as 'Улица' ,Addresses.House as 'Номер дома',User.Number_Phone as 'Номер телефона'" +
                 "From AllOrder INNER Join User ON AllOrder.id_user =User.ID_User " +
-
                 "Inner Join Addresses ON AllOrder.id_user = Addresses.id_user  " +
                 "Inner Join Product ON AllOrder.id_product = Product.ID_Product");
 
+        //лист Insert запросов в БД
         quareSql.add("Insert Into Product(ID_Product,Name_Product,Old_Price,Rating,Unit,Presence,Sale)Values(");
-
     }
+
     public void idset(int a) {
 
     }
@@ -157,7 +159,7 @@ public class EditController {
             AlertAndDelete(1);//метод вывода сообщения на удаления записи
             UserButton.fire();
         }
-        if (((TableColumn)tableView.getColumns().get(0)).getText().equals(new String("Имя"))&&
+        if (((TableColumn)tableView.getColumns().get(0)).getText().equals(new String("ФИО"))&&
                 ((TableColumn)tableView.getColumns().get(1)).getText().equals(new String("Наименование Продукта"))){
             AlertAndDelete(2);//метод вывода сообщения на удаления записи
             OrderButton.fire();
