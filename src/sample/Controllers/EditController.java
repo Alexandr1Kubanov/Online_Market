@@ -23,6 +23,7 @@ import java.util.Optional;
 
 
 public class EditController {
+    int countColumn;
     @FXML
     Button addButton;
     @FXML
@@ -54,6 +55,7 @@ public class EditController {
     private ArrayList<String> quareSql=new ArrayList<>();
     private ArrayList<String> quareSqlDelete=new ArrayList<>();
     private ArrayList<String> quareSqlSelect=new ArrayList<>();
+    private ArrayList<String> list = new ArrayList<>();
 
     private CollationElementIterator label;
 
@@ -74,9 +76,10 @@ public class EditController {
                 "City as 'Город',Street as 'Улица',House as 'Номер Дома',Apartment as 'Номер Квартиры' " +
                 "From User,Addresses Where User.ID_User=Addresses.id_user");
 
-        quareSql.add("Select AllOrder.ID_Order,User.Name as 'ФИО',Product.Name_Product as 'Наименование Продукта',AllOrder.Count  as 'Количество'," +
-                "AllOrder.date_order as 'Дата заказа',AllOrder.Total_Price as 'Цена'," +
-                "AllOrder.Total_Unit,Addresses.City as 'Город',Addresses.Street as 'Улица' ,Addresses.House as 'Номер дома',User.Number_Phone as 'Номер телефона'" +
+        quareSql.add("Select AllOrder.ID_Order,User.Name as 'ФИО',Product.Name_Product as 'Наименование Продукта'," +
+                "AllOrder.Count  as 'Количество',AllOrder.date_order as 'Дата заказа',AllOrder.Total_Price as 'Цена'," +
+                "AllOrder.Total_Unit,Addresses.City as 'Город',Addresses.Street as 'Улица'," +
+                "Addresses.House as 'Номер дома',User.Number_Phone as 'Номер телефона'" +
                 "From AllOrder INNER Join User ON AllOrder.id_user =User.ID_User " +
                 "Inner Join Addresses ON AllOrder.id_user = Addresses.id_user  " +
                 "Inner Join Product ON AllOrder.id_product = Product.ID_Product");
@@ -93,15 +96,13 @@ public class EditController {
     @FXML
     private void getItemButton(String str) {
         SQLiteAdapter sql = new SQLiteAdapter();
-        ArrayList<String> list = new ArrayList<>();
+
         ObservableList<Universal> observableList = sql.AddTableView(str, list);
         columnsAdd(tableView, list);
         tableView.setItems(observableList);
 
-
-
+        countColumn = tableView.getColumns().size();
     }
-
 
     public void initialize() {
         tableView.getSelectionModel().selectedItemProperty().addListener((observable, oldvalue, newvalue) ->{
@@ -209,6 +210,7 @@ public class EditController {
 
         try {
             newScene("../fxml/EditWindow.fxml");
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -218,7 +220,7 @@ public class EditController {
     //реализация кнопки Редактировать
     @FXML
     private void edit(){
-        getID=((Universal)tableView.getSelectionModel().getSelectedItem()).getId();
+        //getID=((Universal)tableView.getSelectionModel().getSelectedItem()).getId();
 
            try {
                newScene("../fxml/EditWindow.fxml");
@@ -309,11 +311,21 @@ public class EditController {
 
         Stage stage = (Stage) editButton.getScene().getWindow();
         stage.isFocused();
-        Parent root1 = FXMLLoader.load(getClass().getResource(str));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(str));
+        Parent root1 =null;
+        try {
+            root1 = fxmlLoader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         stage = new Stage();
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setTitle("Редактирование");
         Scene scene = new Scene(root1);
+
+
+        EditWindowController editWindowControllere = fxmlLoader.getController();
+        editWindowControllere.setAddWindow(list);
         stage.setScene(scene);
         stage.show();
     }
@@ -321,8 +333,6 @@ public class EditController {
 
     public void comboBoxSelected(ActionEvent actionEvent) {
         combobox.getValue();
-
-
     }
 
 }
