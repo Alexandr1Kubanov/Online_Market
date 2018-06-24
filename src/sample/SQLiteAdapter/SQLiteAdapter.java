@@ -95,5 +95,25 @@ public class SQLiteAdapter {
 
     }
 
+    public ArrayList<String> AddTextField(String str) {
+        ArrayList<String> list = new ArrayList<>();
+        if (baseOk) {
+            String query = str;
+            try {
+                Statement statement = connection.createStatement();
+                ResultSet resultSet = statement.executeQuery(query);
+                int count = resultSet.getMetaData().getColumnCount();
+                for (int i = 1; i <= count; i++) {
+                    list.add(resultSet.getString(i));
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            } finally {
+                closeConnetion();
+            }
+        }
+        return list;
+    }
+
 
 }

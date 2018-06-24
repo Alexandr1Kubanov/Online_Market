@@ -21,7 +21,9 @@ public class Universal {
         }
     }
 
-    public int getId() {return id; }
+    public int getId() {
+        return id;
+    }
 
     public StringProperty property(int i) {
         return ItemList.get(i);
