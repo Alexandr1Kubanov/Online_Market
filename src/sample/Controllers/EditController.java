@@ -23,23 +23,13 @@ import java.util.Optional;
 
 
 public class EditController {
-    int countColumn;
+    private int countColumn;
     @FXML
-    Button addButton;
+    Button addButton,deleteButton,editButton,searchButton;
     @FXML
-    Button deleteButton;
-    @FXML
-    Button editButton;
-    @FXML
-    Button searchButton;
+    Button productButton,orderButton,userButton;
     @FXML
     TextField searchField;
-    @FXML
-    Button productButton;
-    @FXML
-    Button userButton;
-    @FXML
-    Button orderButton;
     @FXML
     TableView tableView;
     @FXML
@@ -52,12 +42,11 @@ public class EditController {
     private int getID;
 
     //лист команд для запросов
-    private ArrayList<String> quareSql = new ArrayList<>();
-    private ArrayList<String> quareSqlDelete = new ArrayList<>();
     private ArrayList<String> quareSqlSelect = new ArrayList<>();
+    private ArrayList<String> quareSqlDelete = new ArrayList<>();
     private ArrayList<String> list = new ArrayList<>();
     private ObservableList<Universal> observableListComboBox;
-    private String buttonID = new String();
+    private String buttonID = "";
 
     private CollationElementIterator label;
 
@@ -69,15 +58,15 @@ public class EditController {
         quareSqlDelete.add("Delete From AllOrder Where ID_Order =");
 
         //лист Select запросов на выборку из таблиц БД
-        quareSql.add("Select ID_Product,Name_Product as 'Наименование Продукта' ," +
+        quareSqlSelect.add("Select ID_Product,Name_Product as 'Наименование Продукта' ," +
                 "Count as 'Количество',Existence as 'Наличие',Sale as 'Распродажа'," +
                 "Producing_country as 'Страна производитель' From Product");
 
-        quareSql.add("Select User.ID_User,Name as 'Имя',Number_Phone as 'Номер Телефона'," +
+        quareSqlSelect.add("Select User.ID_User,Name as 'Имя',Number_Phone as 'Номер Телефона'," +
                 "City as 'Город',Street as 'Улица',House as 'Номер Дома',Apartment as 'Номер Квартиры' " +
                 "From User,Addresses Where User.ID_User=Addresses.id_user");
 
-        quareSql.add("Select AllOrder.ID_Order,User.Name as 'ФИО',Product.Name_Product as 'Наименование Продукта'," +
+        quareSqlSelect.add("Select AllOrder.ID_Order,User.Name as 'ФИО',Product.Name_Product as 'Наименование Продукта'," +
                 "AllOrder.Count  as 'Количество',AllOrder.date_order as 'Дата заказа',AllOrder.Total_Price as 'Цена'," +
                 "AllOrder.Total_Unit,Addresses.City as 'Город',Addresses.Street as 'Улица'," +
                 "Addresses.House as 'Номер дома',User.Number_Phone as 'Номер телефона'" +
@@ -85,21 +74,21 @@ public class EditController {
                 "Inner Join Addresses ON AllOrder.id_user = Addresses.id_user  " +
                 "Inner Join Product ON AllOrder.id_product = Product.ID_Product");
 
-        quareSql.add("Select Product.ID_Product,Name_Product as 'Наименование Продукта' ,Count as 'Количество',Existence as 'Наличие',Sale as 'Распродажа',Producing_country as 'Страна производитель' " +
+        quareSqlSelect.add("Select Product.ID_Product,Name_Product as 'Наименование Продукта' ,Count as 'Количество',Existence as 'Наличие',Sale as 'Распродажа',Producing_country as 'Страна производитель' " +
                 "From Product,Categories,categories_product " +
                 "where Product.ID_Product=categories_product.ID_Product " +
                 "and categories_product.ID_Categories= Categories.ID_Categories " +
                 "and Categories.ID_Categories =");
 
         //лист Insert запросов в БД
-        quareSql.add("Insert Into Product(ID_Product,Name_Product,Old_Price,Rating,Unit,Presence,Sale)Values(");
+        quareSqlSelect.add("Insert Into Product(ID_Product,Name_Product,Old_Price,Rating,Unit,Presence,Sale)Values(");
     }
 
-    public void idset(int a) {
+    void idset(int a) {
 
     }
 
-    //метод получает строку запроса и передает ее в метод заполнения листа данными из БД и метод вывода в tableviwe
+    //метод получает строку запроса и передает ее в метод заполнения листа данными из БД и вывода в tableviwe
     @FXML
     private void getItemButton(String str) {
         SQLiteAdapter sql = new SQLiteAdapter();
@@ -116,7 +105,6 @@ public class EditController {
             editButton.setVisible(true);
             deleteButton.setVisible(true);
         });
-        //productButton.fire();
         commandSqllist();
         combobox.setVisible(false);
     }
@@ -129,9 +117,7 @@ public class EditController {
         for (int i = 0; i < list.size(); i++) {
             TableColumn<Universal, String> col = new TableColumn<>();
             int fin = i;
-            col.setCellValueFactory((TableColumn.CellDataFeatures<Universal, String> column) -> {
-                return column.getValue().property(fin);
-            });
+            col.setCellValueFactory((TableColumn.CellDataFeatures<Universal, String> column) -> column.getValue().property(fin));
             col.setText((String) list.get(i));
             tv.getColumns().add(col);
             col.prefWidthProperty().bind(tv.widthProperty().divide(list.size()));
@@ -144,28 +130,22 @@ public class EditController {
         SQLiteAdapter sql = new SQLiteAdapter();
         ArrayList<String> list = new ArrayList<>();
         observableListComboBox = sql.AddTableView(str, list);
-        //combobox.getItems().add("Все продукты");
-        //for (int i = 0; i <= observableListComboBox.size() - 1; i++) {
-
-            combobox.setItems(observableListComboBox);
-            convertInComboBox(combobox);
-
-
-
+        combobox.setItems(observableListComboBox);
+        convertInComboBox(combobox);
     }
-    private void convertInComboBox(ComboBox cb) {
-        cb.setCellFactory((comboBox) -> {
-            return new ListCell<Universal>() {
-                @Override
-                protected void updateItem(Universal item, boolean empty) {
-                    super.updateItem(item, empty);
-                    if (item == null || empty) {
-                        setText(null);
-                    } else {
-                        setText(item.property(0).get());
-                    }
+
+    //конвертер для правильного отображения строк данных observableListComboBox в combobox
+    private String convertInComboBox(ComboBox cb) {
+        cb.setCellFactory((comboBox) -> new ListCell<Universal>() {
+            @Override
+            protected void updateItem(Universal item, boolean empty) {
+                super.updateItem(item, empty);
+                if (item == null || empty) {
+                    setText(null);
+                } else {
+                    setText(item.property(0).get());
                 }
-            };
+            }
         });
         cb.setConverter(new StringConverter<Universal>() {
             @Override
@@ -183,24 +163,25 @@ public class EditController {
                 return null;
             }
         });
+        return null;
     }
 
     //реализация кнопки Удалить
     @FXML
     private void DelButton() {
         //Проверка на соответсвие имени первых столбцов tableview и удаление записей
-        if (((TableColumn) tableView.getColumns().get(0)).getText().equals(new String("Наименование Продукта")) &&
-                ((TableColumn) tableView.getColumns().get(1)).getText().equals(new String("Количество"))) {
+        if (((TableColumn) tableView.getColumns().get(0)).getText().equals("Наименование Продукта") &&
+                ((TableColumn) tableView.getColumns().get(1)).getText().equals("Количество")) {
             AlertAndDelete(0);//метод вывода сообщения на удаления записи
             productButton.fire();
         }
-        if (((TableColumn) tableView.getColumns().get(0)).getText().equals(new String("Имя")) &&
-                ((TableColumn) tableView.getColumns().get(1)).getText().equals(new String("Номер Телефона"))) {
+        if (((TableColumn) tableView.getColumns().get(0)).getText().equals("Имя") &&
+                ((TableColumn) tableView.getColumns().get(1)).getText().equals("Номер Телефона")) {
             AlertAndDelete(1);//метод вывода сообщения на удаления записи
             userButton.fire();
         }
-        if (((TableColumn) tableView.getColumns().get(0)).getText().equals(new String("ФИО")) &&
-                ((TableColumn) tableView.getColumns().get(1)).getText().equals(new String("Наименование Продукта"))) {
+        if (((TableColumn) tableView.getColumns().get(0)).getText().equals("ФИО") &&
+                ((TableColumn) tableView.getColumns().get(1)).getText().equals("Наименование Продукта")) {
             AlertAndDelete(2);//метод вывода сообщения на удаления записи
             orderButton.fire();
         }
@@ -216,7 +197,7 @@ public class EditController {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../fxml/EditWindow.fxml"));
             Parent root = fxmlLoader.load();
             EditWindowController controller = fxmlLoader.getController();
-            if (buttonID == "1") {
+            if (buttonID.equals("1")) {
                 if (editButton.isArmed()) {
                     getID = ((Universal) tableView.getSelectionModel().getSelectedItem()).getId();
                     controller.getId(getID, 0);
@@ -225,16 +206,16 @@ public class EditController {
             } else {
 
 
-                if (editButton.isArmed() && buttonID == "2") {
+                if (editButton.isArmed() && buttonID.equals("2")) {
                     getID = ((Universal) tableView.getSelectionModel().getSelectedItem()).getId();
                     controller.getId(getID, 1);
                 }
-                if (editButton.isArmed() && buttonID == "3") {
+                if (editButton.isArmed() && buttonID.equals("3")) {
                     getID = ((Universal) tableView.getSelectionModel().getSelectedItem()).getId();
                     controller.getId(getID, 2);
                 }
                 ObservableList<Universal> obs = null;
-                controller.startEdit(list, obs);
+                controller.startEdit(list, null);
             }
             stage.setScene(new Scene(root));
             stage.setTitle("");
@@ -262,24 +243,25 @@ public class EditController {
         Button clickedButton = (Button) source;
         switch (clickedButton.getId()) {
             case "productButton":
-                getItemButton(quareSql.get(0));
+                combobox.setPromptText("Выберете категорию");
+                getItemButton(quareSqlSelect.get(0));
                 comboboxadd("Select * From Categories");
                 editButton.setVisible(false);
                 deleteButton.setVisible(false);
-                combobox.setPromptText("Все категории");
-                combobox.setVisibleRowCount(5);
+                combobox.setVisibleRowCount(8);
                 buttonID = "1";
                 break;
             case "userButton":
-                getItemButton(quareSql.get(1));
+                getItemButton(quareSqlSelect.get(1));
                 editButton.setVisible(false);
                 deleteButton.setVisible(false);
                 combobox.setVisible(false);
+
                 categories.setVisible(false);
                 buttonID = "2";
                 break;
             case "orderButton":
-                getItemButton(quareSql.get(2));
+                getItemButton(quareSqlSelect.get(2));
                 combobox.setVisible(false);
                 categories.setVisible(false);
                 editButton.setVisible(false);
@@ -296,7 +278,7 @@ public class EditController {
     }
 
     //метод вывода сообщения на удаления записи из tableview и БД(передается номер команды quaresqlDelete)
-    public void AlertAndDelete(int num) {
+    private void AlertAndDelete(int num) {
         Alert alert = new Alert(AlertType.CONFIRMATION);
         alert.setHeaderText("Внимание");
         alert.setContentText("Вы уверены,что хотите удалить запись?");
@@ -327,14 +309,13 @@ public class EditController {
 
     }
 
+    //вывод в TableView данных из выбранной категории продуктов в combobox
     public void comboBoxSelected(ActionEvent actionEvent) {
-            if(combobox.getValue()!= "Все продукты") {
-
-                String str = quareSql.get(3) + ((Universal) combobox.getValue()).getId();
-                getItemButton(str);
+            if(((Universal) combobox.getValue()).getId() != 16 && ((Universal) combobox.getValue()).getId() != 0 ) {
+                getItemButton(quareSqlSelect.get(3) + ((Universal) combobox.getValue()).getId());
             }
-            else {
-                getItemButton("Select * From Categories");
+            else  {
+                getItemButton(quareSqlSelect.get(0));
             }
 
     }

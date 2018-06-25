@@ -1,5 +1,9 @@
 package sample.Controllers;
 
+import com.jfoenix.controls.JFXBadge;
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXPasswordField;
+import com.jfoenix.controls.JFXTextField;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -18,23 +22,20 @@ import java.io.IOException;
 
 public class Controller {
 
-    int userId;
+    private int userId;
 
 
     @FXML
-    TextField login;
+    JFXTextField login;
     @FXML
-    PasswordField password;
+    JFXPasswordField password;
     @FXML
-    Button enter;
-    @FXML
-    Button escape;
-
+    JFXButton enter,escape;
 
     public void Click()  {
 
-        String fromPwd = password.getText().toString();
-        String fromLogin = login.getText().toString();
+        String fromPwd = password.getText();
+        String fromLogin = login.getText();
 
         if(!fromLogin.isEmpty()&&!fromPwd.isEmpty()) {
             SQLiteAdapter sqLiteAdapter = new SQLiteAdapter();
@@ -66,6 +67,7 @@ public class Controller {
                 stage = new Stage();
                 stage.initModality(Modality.NONE);
                 stage.setTitle("Таблица данных");
+                assert root1 != null;
                 Scene scene = new Scene(root1);
                 stage.setScene(scene);
                 stage.show();

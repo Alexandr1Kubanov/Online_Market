@@ -2,6 +2,7 @@
   <library name="sqlite-jdbc-3.21.0">
     <CLASSES>
       <root url="jar://$PROJECT_DIR$/sqlite-jdbc-3.21.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/sample/library/jfoenix-9.0.4.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
