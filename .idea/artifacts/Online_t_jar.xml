@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Online_t:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Online_t_jar</output-path>
+    <root id="archive" name="Online_t_jar.jar">
+      <element id="module-output" name="Online_Market" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/sqlite-jdbc-3.21.0.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
