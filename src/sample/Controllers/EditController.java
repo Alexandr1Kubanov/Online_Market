@@ -109,7 +109,7 @@ public class EditController {
         combobox.setVisible(false);
     }
 
-    //метод получает ссылку на TableView для заполнения его данными из полученного листа
+    //метод получает ссылку на TableView для заполнения Имена колон данными из полученного листа
     @FXML
     private void columnsAdd(TableView tv, ArrayList list) {
         tv.getColumns().clear();
@@ -172,7 +172,7 @@ public class EditController {
         //Проверка на соответсвие имени первых столбцов tableview и удаление записей
         if (((TableColumn) tableView.getColumns().get(0)).getText().equals("Наименование Продукта") &&
                 ((TableColumn) tableView.getColumns().get(1)).getText().equals("Количество")) {
-            AlertAndDelete(0);//метод вывода сообщения на удаления записи
+            AlertAndDelete(0);//метод вывода сообщения на удаления записи,
             productButton.fire();
         }
         if (((TableColumn) tableView.getColumns().get(0)).getText().equals("Имя") &&
@@ -187,35 +187,40 @@ public class EditController {
         }
     }
 
-    //реализация кнопки Добавления
+    //реализация кнопки Добавления и Редактирование
     @FXML
-    private void ClickedButtonAddEdit() {
+    private void ClickedButtonAddorEdit() {
 
         try {
             ArrayList<String> testList = list;
             Stage stage = new Stage();
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../fxml/EditWindow.fxml"));
             Parent root = fxmlLoader.load();
-            EditWindowController controller = fxmlLoader.getController();
-            if (buttonID.equals("1")) {
-                if (editButton.isArmed()) {
+            EditWindowController editcontroller = fxmlLoader.getController();
+            //переменной buttonID присваевается значение при нажатии кнопок таблиц с данными
+            if (buttonID.equals("1")) {// buttonID "1" -id кнопки ProductButton
+                if (editButton.isArmed()) { //если была нажата кнопка editButton
+                    //получаем ID выбранной в TableView ячейки
                     getID = ((Universal) tableView.getSelectionModel().getSelectedItem()).getId();
-                    controller.getId(getID, 0);
+                    //передаем в метод контроллера ID и целое число для правильной работы
+                    editcontroller.getId(getID, 0);
                 }
-                controller.startEdit(list, observableListComboBox);
+                //срабатывает при нажатии на кнопку addButton
+                //передаем ссылки на лист с именами столбцов таблицы и лист имен категорий продуктов из combobox
+                editcontroller.startEdit(list, observableListComboBox);
             } else {
-
-
+                //buttonID "2" -id кнопки UserButton
                 if (editButton.isArmed() && buttonID.equals("2")) {
                     getID = ((Universal) tableView.getSelectionModel().getSelectedItem()).getId();
-                    controller.getId(getID, 1);
+                    editcontroller.getId(getID, 1);
                 }
+                //buttonID "3" -id кнопки OrderButton
                 if (editButton.isArmed() && buttonID.equals("3")) {
                     getID = ((Universal) tableView.getSelectionModel().getSelectedItem()).getId();
-                    controller.getId(getID, 2);
+                    editcontroller.getId(getID, 2);
                 }
-                ObservableList<Universal> obs = null;
-                controller.startEdit(list, null);
+                //ObservableList<Universal> obs = null;
+                editcontroller.startEdit(list, null);
             }
             stage.setScene(new Scene(root));
             stage.setTitle("");
@@ -243,6 +248,7 @@ public class EditController {
         Button clickedButton = (Button) source;
         switch (clickedButton.getId()) {
             case "productButton":
+                combobox.setVisible(true);
                 combobox.setPromptText("Выберете категорию");
                 getItemButton(quareSqlSelect.get(0));
                 comboboxadd("Select * From Categories");
@@ -272,7 +278,7 @@ public class EditController {
                 categories.setVisible(false);
                 editButton.setVisible(false);
                 deleteButton.setVisible(false);
-                ClickedButtonAddEdit();
+                ClickedButtonAddorEdit();//метод обрабатывает нажатие кнопок таблиц данных
                 break;
         }
     }

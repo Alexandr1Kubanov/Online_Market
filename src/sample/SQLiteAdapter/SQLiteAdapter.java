@@ -20,14 +20,12 @@ public class SQLiteAdapter {
             Statement statement = connection.createStatement();
             statement.execute("Select ID_User from User LIMIT 1");
             baseOk = true;
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
+        } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public void closeConnetion() {
+    private void closeConnetion() {
         try {
             if (connection != null)
                 connection.close();
@@ -56,7 +54,7 @@ public class SQLiteAdapter {
         }
         return -1;
     }
-
+    //метод принимает строку запроса команды SQL и ссылку на ArrayList(заполняет его Именами колон таблиц из БД)
     public ObservableList<Universal> AddTableView(String str, ArrayList nameColumns) {
         ObservableList<Universal> PL = FXCollections.observableArrayList();
         if (baseOk) {
@@ -66,10 +64,10 @@ public class SQLiteAdapter {
                 ResultSet resultSet = statement.executeQuery(query);
                 int count = resultSet.getMetaData().getColumnCount();
                 for (int i = 2; i <= count; i++) {
-                    nameColumns.add(resultSet.getMetaData().getColumnName(i));
+                    nameColumns.add(resultSet.getMetaData().getColumnName(i));//заполняет его Именами колон таблиц из БД
                 }
                 while (resultSet.next()) {
-                    PL.add(new Universal(resultSet, count));
+                    PL.add(new Universal(resultSet, count));//заполняет его данными колон таблиц из БД
                 }
             } catch (SQLException ex) {
                 ex.printStackTrace();
@@ -79,13 +77,12 @@ public class SQLiteAdapter {
         }
         return PL;
     }
-
+    //
     public void FromBaseById(String str) {
         if (baseOk) {
-            String query = str;
             try {
                 Statement statement = connection.createStatement();
-                statement.execute(query);
+                statement.execute(str);
             } catch (SQLException ex) {
                 ex.printStackTrace();
             } finally {
