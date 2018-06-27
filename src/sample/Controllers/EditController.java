@@ -1,5 +1,12 @@
 package sample.Controllers;
 
+import javafx.beans.InvalidationListener;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -9,21 +16,25 @@ import javafx.event.*;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
 import sample.SQLiteAdapter.SQLiteAdapter;
 import sample.Universal;
+import javafx.util.Callback;
 
 import java.io.IOException;
 import java.text.CollationElementIterator;
 import java.util.ArrayList;
 import java.util.Optional;
+import java.util.function.Predicate;
 
 
 public class EditController {
-    private int countColumn;
+
     @FXML
     Button addButton,deleteButton,editButton,searchButton;
     @FXML
@@ -46,9 +57,9 @@ public class EditController {
     private ArrayList<String> quareSqlDelete = new ArrayList<>();
     private ArrayList<String> list = new ArrayList<>();
     private ObservableList<Universal> observableListComboBox;
+    private ObservableList<Universal> observableList  = FXCollections.observableArrayList();
     private String buttonID = "";
 
-    private CollationElementIterator label;
 
 
     private void commandSqllist() {
@@ -93,20 +104,27 @@ public class EditController {
     private void getItemButton(String str) {
         SQLiteAdapter sql = new SQLiteAdapter();
         list.clear();
-        ObservableList<Universal> observableList = sql.AddTableView(str, list);
+        observableList = sql.AddTableView(str, list);
         columnsAdd(tableView, list);
         tableView.setItems(observableList);
-        countColumn = tableView.getColumns().size();
+
+
+
     }
 
     @FXML
     private void initialize() {
+
         tableView.getSelectionModel().selectedItemProperty().addListener((observable, oldvalue, newvalue) -> {
             editButton.setVisible(true);
             deleteButton.setVisible(true);
         });
+
         commandSqllist();
-        combobox.setVisible(false);
+        combobox.setVisible(true);
+        comboboxadd("Select * From Categories");
+        productButton.fire();
+
     }
 
     //метод получает ссылку на TableView для заполнения Имена колон данными из полученного листа
@@ -119,7 +137,7 @@ public class EditController {
             int fin = i;
             col.setCellValueFactory((TableColumn.CellDataFeatures<Universal, String> column) -> column.getValue().property(fin));
             col.setText((String) list.get(i));
-            tv.getColumns().add(col);
+            boolean add = tv.getColumns().add(col);
             col.prefWidthProperty().bind(tv.widthProperty().divide(list.size()));
         }
     }
@@ -130,8 +148,14 @@ public class EditController {
         SQLiteAdapter sql = new SQLiteAdapter();
         ArrayList<String> list = new ArrayList<>();
         observableListComboBox = sql.AddTableView(str, list);
+        if(!observableListComboBox.isEmpty())
+        {
         combobox.setItems(observableListComboBox);
         convertInComboBox(combobox);
+        }
+        else {
+            System.out.println("Нет данных");
+        }
     }
 
     //конвертер для правильного отображения строк данных observableListComboBox в combobox
@@ -240,7 +264,6 @@ public class EditController {
 
         combobox.setVisible(true);
         categories.setVisible(true);
-
         if (!(source instanceof Button)) {
             return;
         }
@@ -251,7 +274,6 @@ public class EditController {
                 combobox.setVisible(true);
                 combobox.setPromptText("Выберете категорию");
                 getItemButton(quareSqlSelect.get(0));
-                comboboxadd("Select * From Categories");
                 editButton.setVisible(false);
                 deleteButton.setVisible(false);
                 combobox.setVisibleRowCount(8);
@@ -262,7 +284,6 @@ public class EditController {
                 editButton.setVisible(false);
                 deleteButton.setVisible(false);
                 combobox.setVisible(false);
-
                 categories.setVisible(false);
                 buttonID = "2";
                 break;
@@ -296,7 +317,7 @@ public class EditController {
         Optional<ButtonType> option = alert.showAndWait();
 
         if (option.get() == null) {
-            this.label.setText("Не выбрано!");
+            Label label = new Label("Не выбрано!");
         } else if (option.get() == Yes) {
             //получаем ID выбранного поля
             getID = ((Universal) tableView.getSelectionModel().getSelectedItem()).getId();
@@ -309,7 +330,7 @@ public class EditController {
                 sql.FromBaseById(quareSqldel);
                 //Отрисовываем таблицу с новыми данными
             } else if (option.get() == No) {
-                this.label.setText("Cancelled!");
+                Label label = new Label("Cancelled!");
             }
         }
 
@@ -317,13 +338,10 @@ public class EditController {
 
     //вывод в TableView данных из выбранной категории продуктов в combobox
     public void comboBoxSelected(ActionEvent actionEvent) {
+
             if(((Universal) combobox.getValue()).getId() != 16 && ((Universal) combobox.getValue()).getId() != 0 ) {
                 getItemButton(quareSqlSelect.get(3) + ((Universal) combobox.getValue()).getId());
             }
-            else  {
-                getItemButton(quareSqlSelect.get(0));
-            }
-
     }
 
 }

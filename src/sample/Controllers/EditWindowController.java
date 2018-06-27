@@ -14,6 +14,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
 
 public class EditWindowController {
     private ArrayList<String> lableList = new ArrayList();
@@ -21,6 +22,9 @@ public class EditWindowController {
     private ObservableList<Universal> ComboBoxList;
     private ArrayList<String> textFieldList = new ArrayList<>();
     private ArrayList<String> quareSqlEditWindow = new ArrayList<>();
+    private ArrayList<String> allInfoFromWindow = new ArrayList<>();
+    private ArrayList<TextField> tfList = new ArrayList<>();
+    private String categori= "";
 
     private void comandSql() {
         quareSqlEditWindow.add("Select Name_Product,Count,Existence,Sale,Producing_country From Product where ID_Product =");
@@ -74,11 +78,12 @@ public class EditWindowController {
             }
             vbox1.getChildren().addAll(comboBox1);
         }
+
         for (int i = 0; i < lableList.size(); i++) {
             Label label = new Label();
             label.setText(lableList.get(i));
             TextField tf = new TextField();
-
+            tfList.add(tf);
             if (!textFieldList.isEmpty()) {
                 tf.setText(textFieldList.get(i));
             }
@@ -87,9 +92,37 @@ public class EditWindowController {
         }
     }
 
+    public void getInfoEdit(ArrayList allInfoFromWindow) {
+
+        if (comboBox1.getValue() != "Выберете категорию" && comboBox1.getValue() != null) {
+            categori = comboBox1.getValue().toString();
+           //System.out.println(vbox1);
+            for (int i = 0; i < tfList.size(); i++) {
+
+                if (!tfList.isEmpty()) {
+                    allInfoFromWindow.add((tfList.get(i)).getText());
+                }
+
+            }
+        }
+        else{
+            for (int i = 0; i < tfList.size(); i++) {
+
+                if (!tfList.isEmpty()) {
+                    allInfoFromWindow.add((tfList.get(i)).getText());
+                }
+
+            }
+        }
+
+        if(!allInfoFromWindow.containsAll(textFieldList)) {
+            System.out.println(categori + " " + allInfoFromWindow);
+        }else{
+            System.out.println("Они одинаковы");
+        }
+    }
+
     public void getResultFromWindow(ActionEvent actionEvent) {
-
-
-
+        getInfoEdit(allInfoFromWindow);
     }
 }
