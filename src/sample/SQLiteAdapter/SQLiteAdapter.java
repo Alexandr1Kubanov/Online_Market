@@ -13,6 +13,8 @@ public class SQLiteAdapter {
     private Connection connection;
     private boolean baseOk = false;
 
+    private ResultSet resultSet;
+
     public SQLiteAdapter() {
         try {
             Class.forName("org.sqlite.JDBC");
@@ -34,10 +36,9 @@ public class SQLiteAdapter {
         }
     }
 
-
-    public int checkUser(String l, String p) {
+    public int checkUser(String login, String password) {
         if (baseOk) {
-            String query1 = "select ID_User from User where Name='" + l + "' and Password ='" + p + "' and lable = 1";
+            String query1 = "select ID_User from User where Name='" + login + "' and Password ='" + password+"'";
 
             try {
                 Statement statement = connection.createStatement();
@@ -48,12 +49,34 @@ public class SQLiteAdapter {
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
+
+            } finally {
+                closeConnetion();
+            }
+
+        }
+        return -1;
+    }
+    public int checkUser(int userId) {
+        if (baseOk) {
+            String query1 = "select lable from User where ID_User = " + userId;
+
+            try {
+                Statement statement = connection.createStatement();
+                ResultSet rs = statement.executeQuery(query1);
+
+                while (rs.next()) {
+                    return rs.getInt("lable");
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
             } finally {
                 closeConnetion();
             }
         }
         return -1;
     }
+
     //метод принимает строку запроса команды SQL и ссылку на ArrayList(заполняет его Именами колон таблиц из БД)
     public ObservableList<Universal> AddTableView(String str, ArrayList nameColumns) {
         ObservableList<Universal> PL = FXCollections.observableArrayList();
@@ -61,7 +84,7 @@ public class SQLiteAdapter {
             String query = str;
             try {
                 Statement statement = connection.createStatement();
-                ResultSet resultSet = statement.executeQuery(query);
+                resultSet = statement.executeQuery(query);
                 int count = resultSet.getMetaData().getColumnCount();
                 for (int i = 2; i <= count; i++) {
                     nameColumns.add(resultSet.getMetaData().getColumnName(i));//заполняет его Именами колон таблиц из БД
@@ -77,6 +100,7 @@ public class SQLiteAdapter {
         }
         return PL;
     }
+
     //
     public void FromBaseById(String str) {
         if (baseOk) {
@@ -98,7 +122,7 @@ public class SQLiteAdapter {
             String query = str;
             try {
                 Statement statement = connection.createStatement();
-                ResultSet resultSet = statement.executeQuery(query);
+                resultSet = statement.executeQuery(query);
                 int count = resultSet.getMetaData().getColumnCount();
                 for (int i = 1; i <= count; i++) {
                     list.add(resultSet.getString(i));
@@ -110,6 +134,26 @@ public class SQLiteAdapter {
             }
         }
         return list;
+    }
+    public void updateDataBase(String command,int [] lastid){
+        if (baseOk) {
+            try {
+
+                Statement statement = connection.createStatement();
+                statement.execute(command);
+                resultSet = statement.getGeneratedKeys();
+
+                while (resultSet.next()){
+                    lastid[0]=resultSet.getInt(1);
+                }
+
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            } finally {
+                closeConnetion();
+            }
+        }
+
     }
 
 
