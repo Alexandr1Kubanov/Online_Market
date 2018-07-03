@@ -70,8 +70,8 @@ public class EditController {
 
         //лист Select запросов на выборку из таблиц БД
         quareSqlSelect.add("Select Product.ID_Product,Product.Name_Product as 'Наименование Продукта', " +
-                "Product.Producing_country as 'Страна производитель',Product.Count as 'Количество',Product_Price.Price as 'Цена',(CASE WHEN Product.Sale = 0 THEN 'нет' " +
-                "ELSE 'да' END) as 'Распродажа',(CASE WHEN Product.Existence = 0 THEN 'нет' ELSE 'да' END) as 'Наличие на складе' " +
+                "Product.Producing_country as 'Страна производитель',Product.Count as 'Количество',Product_Price.Price as 'Цена', Product.Sale  " +
+                "'Распродажа', Product.Existence as 'Наличие на складе' " +
                 " From Product INNER Join Product_Price ON Product_Price.id_product = Product.ID_Product ");
 
         quareSqlSelect.add("Select User.ID_User,Name as 'Имя',Number_Phone as 'Номер Телефона'," +
@@ -139,7 +139,7 @@ public class EditController {
             int fin = i;
             col.setCellValueFactory((TableColumn.CellDataFeatures<Universal, String> column) -> column.getValue().property(fin));
             col.setText((String) list.get(i));
-            boolean add = tv.getColumns().add(col);
+            tv.getColumns().add(col);
             col.prefWidthProperty().bind(tv.widthProperty().divide(list.size()));
         }
     }
@@ -229,7 +229,7 @@ public class EditController {
             {// buttonID "1" -id кнопки ProductButton
                 if (editButton.isArmed())
                 { //если была нажата кнопка editButton
-                    //получаем ID выбранной в TableView ячейки888
+                    //получаем ID выбранной в TableView ячейки
                     getID = ((Universal) tableView.getSelectionModel().getSelectedItem()).getId();
                     //передаем в метод контроллера ID_product,целое число для команды sql,и id нажатой кнопки
                     editcontroller.getId(getID, 0,buttonID);

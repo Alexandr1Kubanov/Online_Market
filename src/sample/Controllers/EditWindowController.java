@@ -113,7 +113,6 @@ public class EditWindowController {
             collectorlist.add(comboboxCategory.getPromptText());
         }
 
-
         //заполняем модальное окно именами столбцов текущего TableView и дополныем к имени поле TextField
         for (int i = 0; i < lableList.size() ; i++)
         {
@@ -223,8 +222,9 @@ public class EditWindowController {
     private void InsertAndUpdateDB(ArrayList infolist){
         if(!infolist.isEmpty())
         {
+            //реализация Add
             SQLiteAdapter sqLiteAdapter = new SQLiteAdapter();
-            if (buttonid.equals("1"))
+            if (buttonid.equals("1")&& id == 0)
             {
                 //заносит данные в таблицу Product
                 sqLiteAdapter.updateDataBase("Insert Into Product(Name_Product,Producing_country,Count,Sale,Existence)Values('" + infolist.get(1) +
@@ -247,11 +247,36 @@ public class EditWindowController {
                         break;
                     }
                 }
-
                 sqLiteAdapter=new SQLiteAdapter();
                 //заносит данные в таблицу categories_product
                 sqLiteAdapter.updateDataBase("Insert Into categories_product(ID_Product,ID_Categories)Values('"
                         +idproduct+"','"+idcategories+"')",lastIdinDB);
+            }
+
+            //реализация Update
+            if(buttonid.equals("1")&& id != 0)
+            {
+                sqLiteAdapter.updateDataBase("UPDATE Product SET Name_Product= '"+infolist.get(1)+"', Producing_country= '"+infolist.get(2)+"', Count= '"+infolist.get(3)+"' , Sale='"+infolist.get(5)+"', Existence='"+infolist.get(6)+"' WHERE ID_Product ='"+id+"'",lastIdinDB);
+                int idproduct = lastIdinDB[0];
+
+                long curTime = System.currentTimeMillis();
+                String curStringDate = new SimpleDateFormat("dd.MM.yyyy").format(curTime);
+
+                sqLiteAdapter=new SQLiteAdapter();
+                //заносит данные в таблицу Product_Price
+                sqLiteAdapter.updateDataBase("Update Product_Price SET id_product='"+id+"', date_start='"+curStringDate+"', price = '"+infolist.get(4)+"' WHERE ID_Product ='"+id+"'",lastIdinDB);
+
+                //присваиваем переменной ID выбранной категории
+                int idcategories=0;
+                for (Universal aComboBoxList : ComboBoxList) {
+                    if ((aComboBoxList.property(0).getValue()).equals(comboboxCategory.getValue().toString())) {
+                        idcategories = aComboBoxList.getId();
+                        break;
+                    }
+                }
+                sqLiteAdapter=new SQLiteAdapter();
+                //заносит данные в таблицу categories_product
+                sqLiteAdapter.updateDataBase("Update categories_product SET ID_Product= '"+ id +"',ID_Categories ='"+ idcategories +"'",lastIdinDB);
             }
         }
     }
