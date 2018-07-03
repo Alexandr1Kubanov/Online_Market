@@ -237,10 +237,12 @@ public class EditController {
                     getID = ((Universal) tableView.getSelectionModel().getSelectedItem()).getId();
                     //передаем в метод контроллера ID_product,целое число для команды sql,и id нажатой кнопки
                     editcontroller.getId(getID, 0,buttonID);
+
                 }
+                if(!editButton.isArmed()){editcontroller.getId(0, 0,buttonID);}
+
                 //срабатывает при нажатии на кнопку addButton
                 //передаем ссылки на лист с именами столбцов таблицы и лист имен категорий продуктов из combobox
-                editcontroller.getId(0, 0,buttonID);
                 editcontroller.startEdit(list, observableListComboBox);
             } else {
                 //buttonID "2" -id кнопки UserButton
@@ -255,8 +257,9 @@ public class EditController {
                     getID = ((Universal) tableView.getSelectionModel().getSelectedItem()).getId();
                     editcontroller.getId(getID, 2,buttonID);
                 }
+                if(!editButton.isArmed()) {editcontroller.getId(0, 0,buttonID);}
                 //ObservableList<Universal> obs = null;
-                editcontroller.getId(0, 0,buttonID);
+                //
                 editcontroller.startEdit(list, null);
             }
             stage.setScene(new Scene(root));
