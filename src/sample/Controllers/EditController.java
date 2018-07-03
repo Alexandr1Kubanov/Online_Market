@@ -116,19 +116,23 @@ public class EditController {
 
     @FXML
     private void initialize() {
-
         tableView.getSelectionModel().selectedItemProperty().addListener((observable, oldvalue, newvalue) -> {
             editButton.setVisible(true);
             deleteButton.setVisible(true);
         });
-
         commandSqllist();
         combobox.setVisible(true);
         comboboxadd("Select * From Categories");
         productButton.fire();
-
     }
 
+    protected void start(){
+        //commandSqllist();
+        //combobox.setVisible(true);
+        //comboboxadd("Select * From Categories");
+        //productButton.fire();
+
+    }
     //метод получает ссылку на TableView для заполнения Имена колон данными из полученного листа
     @FXML
     private void columnsAdd(TableView tv, ArrayList list) {
@@ -236,6 +240,7 @@ public class EditController {
                 }
                 //срабатывает при нажатии на кнопку addButton
                 //передаем ссылки на лист с именами столбцов таблицы и лист имен категорий продуктов из combobox
+                editcontroller.getId(0, 0,buttonID);
                 editcontroller.startEdit(list, observableListComboBox);
             } else {
                 //buttonID "2" -id кнопки UserButton
@@ -251,6 +256,7 @@ public class EditController {
                     editcontroller.getId(getID, 2,buttonID);
                 }
                 //ObservableList<Universal> obs = null;
+                editcontroller.getId(0, 0,buttonID);
                 editcontroller.startEdit(list, null);
             }
             stage.setScene(new Scene(root));
@@ -352,6 +358,10 @@ public class EditController {
             if(((Universal) combobox.getValue()).getId() != 16 && ((Universal) combobox.getValue()).getId() != 0 )
             {
                 String str = quareSqlSelect.get(3) + ((Universal) combobox.getValue()).getId();
+                getItemButton(str);
+            }
+            if(((Universal) combobox.getValue()).getId() == 16 ){
+                String str = quareSqlSelect.get(0);
                 getItemButton(str);
             }
     }
