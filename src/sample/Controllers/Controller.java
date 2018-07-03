@@ -23,14 +23,15 @@ import java.io.IOException;
 public class Controller {
 
     private int userId;
+    private int lableId;
 
 
     @FXML
-    JFXTextField login;
+    TextField login;
     @FXML
-    JFXPasswordField password;
+    PasswordField password;
     @FXML
-    JFXButton enter,escape;
+    Button enter,escape;
 
     public void Click()  {
 
@@ -41,7 +42,8 @@ public class Controller {
             SQLiteAdapter sqLiteAdapter = new SQLiteAdapter();
 
             userId = sqLiteAdapter.checkUser(fromLogin,fromPwd);
-
+            sqLiteAdapter = new SQLiteAdapter();
+            lableId= sqLiteAdapter.checkUser(userId);
             if(userId == -1)
             {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION,"",ButtonType.OK);
@@ -52,7 +54,7 @@ public class Controller {
                 login.setText(fromLogin);
                 alert.show();
             }
-            else
+            if(userId != 0 && lableId == 1)
             {
                 Stage stage = (Stage) enter.getScene().getWindow();
                 stage.close();
@@ -74,6 +76,25 @@ public class Controller {
 
                 EditController edit = fxmlLoader.getController();
                 edit.idset(userId);
+            }
+            if(userId !=0 && lableId == 0){
+                Stage stage = (Stage) enter.getScene().getWindow();
+                stage.close();
+
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../fxml/UserWindowMarket.fxml"));
+                Parent root1 = null;
+                try {
+                    root1 = fxmlLoader.load();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                stage = new Stage();
+                stage.initModality(Modality.NONE);
+                stage.setTitle("Online Market");
+                assert root1 != null;
+                Scene scene = new Scene(root1);
+                stage.setScene(scene);
+                stage.show();
             }
         }
     }
