@@ -70,13 +70,13 @@ public class EditController {
 
         //лист Select запросов на выборку из таблиц БД
         quareSqlSelect.add("Select Product.ID_Product,Product.Name_Product as 'Наименование Продукта', " +
-                "Product.Producing_country as 'Страна производитель',Product.Count as 'Количество',Product_Price.Price as 'Цена', Product.Sale  " +
-                "'Распродажа', Product.Existence as 'Наличие на складе' " +
+                "Product.Producing_country as 'Страна производитель',Product.Count as 'Количество',Product_Price.Price as 'Цена', Product.Sale as 'Распродажа', Product.Existence as 'Наличие на складе' " +
                 " From Product INNER Join Product_Price ON Product_Price.id_product = Product.ID_Product ");
 
-        quareSqlSelect.add("Select User.ID_User,Name as 'Имя',Number_Phone as 'Номер Телефона'," +
-                "City as 'Город',Street as 'Улица',House as 'Номер Дома',Apartment as 'Номер Квартиры' " +
-                "From User,Addresses Where User.ID_User=Addresses.id_user");
+        quareSqlSelect.add("Select User.ID_User, User.Name as 'Имя/Логин', User.Number_Phone as 'Номер Телефона', User.Password as 'Пароль', " +
+                " Addresses.City as 'Город' , Addresses.Street as 'Улица' , Addresses.House as 'Номер Дома' , Addresses.Apartment as 'Номер Квартиры' " +
+                " From User Join Addresses " +
+                " Where User.ID_User = Addresses.id_user");
 
         quareSqlSelect.add("Select AllOrder.id_user,User.Name as 'ФИО',Product.Name_Product as 'Наименование Продукта', " +
                 "AllOrder.Count  as 'Количество',AllOrder.date_order as 'Дата заказа',AllOrder.Total_Price as 'Цена', " +

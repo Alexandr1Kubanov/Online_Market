@@ -42,7 +42,10 @@ public class EditWindowController {
     {
         quareSqlEditWindow.add("Select Product.Name_Product,Product.Producing_country,Product.Count,Product_Price.price,Product.Sale,Product.Existence From Product, Product_Price Where Product_Price.id_product = Product.ID_Product AND Product.ID_Product =");
 
-        quareSqlEditWindow.add("Select Name,Number_Phone,City,Street ,House ,Apartment From User,Addresses Where User.ID_User=Addresses.id_user AND Addresses.id_user =");
+        quareSqlEditWindow.add("Select User.Name as 'Имя/Логин', User.Number_Phone as 'Номер Телефона', User.Password as 'Пароль', " +
+                        " Addresses.City as 'Город' , Addresses.Street as 'Улица' , Addresses.House as 'Номер Дома' , Addresses.Apartment as 'Номер Квартиры' " +
+                        " From User Join Addresses " +
+                        " Where User.ID_User = Addresses.id_user AND Addresses.id_user =");
 
         quareSqlEditWindow.add("Select User.Name,Product.Name_Product,AllOrder.Count,AllOrder.date_order ,AllOrder.Total_Price, " +
                 "AllOrder.Total_Unit,Addresses.City,Addresses.Street,Addresses.House ,User.Number_Phone " +
@@ -190,7 +193,7 @@ public class EditWindowController {
             for (int i = 0; i < collectorlist.size(); i++) {
                 if (!collectorlist.isEmpty())
                 {
-                    allInfoFromWindow.add(textFielfWL.get(count).getText());
+                    allInfoFromWindow.add(textFielfWL.get(i).getText());
                 }
             }
 
@@ -223,6 +226,7 @@ public class EditWindowController {
             }
             ProductAddEdit(allInfoFromWindow);
         }
+        UserAddEdit(allInfoFromWindow);
         //InsertAndUpdateDB(allInfoFromWindow);
     }
 
@@ -311,10 +315,12 @@ public class EditWindowController {
         {
             //реализация Add(ProductTable)
             SQLiteAdapter sqLiteAdapter = new SQLiteAdapter();
+
             if (buttonid.equals("2")&& id == 0)
             {
-                //заносит данные в таблицу User
-                sqLiteAdapter.updateDataBase("Insert Into Product(Name_Product,Producing_country,Count,Sale,Existence)Values('" + 1 + "')",lastIdinDB);
+                //заносит данные в таблицу UserTable
+                sqLiteAdapter.updateDataBase("Insert Into User(Name,Nubmer_Phone,count_of_buy,sum_of_buy,Card_Code,Password,lable)" +
+                        " Values('" +infolist.get(0)+"','" + infolist.get(1) + "',' ',' ',' ', '"+infolist.get(2)+"', '0')",lastIdinDB);
                 int iduser = lastIdinDB[0];
 
             }
@@ -322,8 +328,13 @@ public class EditWindowController {
             //реализация Update(UserTable)
             if(buttonid.equals("2")&& id != 0)
             {
-                sqLiteAdapter.updateDataBase("UPDATE Product SET Name_Product= '"+infolist.get(1)+"', Producing_country= '"+infolist.get(2)+"', Count= '"+infolist.get(3)+"' , Sale='"+infolist.get(5)+"', Existence='"+infolist.get(6)+"' WHERE ID_Product ='"+id+"'",lastIdinDB);
+                //todo не работает update ругается на
+                sqLiteAdapter.updateDataBase("UPDATE User SET Name = '"+infolist.get(0)+"', Number_Phone = '"+infolist.get(1)+"', Password = '"+infolist.get(2)+"' ,lable ='0'  WHERE ID_User = "+id,lastIdinDB);
 
+                sqLiteAdapter=new SQLiteAdapter();
+                sqLiteAdapter.updateDataBase("UPDATE Addresses SET City= '"+infolist.get(3)+"', " +
+                        " Street = '"+infolist.get(4)+"', house= '"+infolist.get(5)+"', " +
+                        " Apartment='"+infolist.get(6)+"' WHERE id_user ='"+id+"'",lastIdinDB);
 
                 Stage stage = (Stage) buttonOK.getScene().getWindow();
                 stage.close();
