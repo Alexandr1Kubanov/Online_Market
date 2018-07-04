@@ -18,6 +18,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -58,9 +59,44 @@ public class EditController {
     private ArrayList<String> list = new ArrayList<>();
     private ObservableList<Universal> observableListComboBox;
     private ObservableList<Universal> observableList  = FXCollections.observableArrayList();
+    private  FilteredList<Universal> filteredData;
     private String buttonID = "";
 
+    @FXML
+    private void initialize() {
+        tableView.getSelectionModel().selectedItemProperty().addListener((observable, oldvalue, newvalue) -> {
+            editButton.setVisible(true);
+            deleteButton.setVisible(true);
+        });
 
+        commandSqllist();
+        combobox.setVisible(true);
+        comboboxadd("Select * From Categories");
+        productButton.fire();
+
+        filteredData = new FilteredList<>(observableList, e -> true);
+        searchField.setOnKeyReleased(e ->{
+            searchField.textProperty().addListener(((observableValue, oldValue, newValue) -> {
+                filteredData.setPredicate(universal->{
+                    if( newValue==null || newValue.isEmpty()) {
+                        return true;
+                    }
+
+                    String lowerCaseFilter = newValue.toLowerCase();
+                    if(universal.property(0).getValue().toLowerCase().contains(lowerCaseFilter))
+                    {
+                        return true;
+                    }
+                    else if(universal.property(1).getValue().toLowerCase().contains(lowerCaseFilter)){
+                        return true;
+                    }
+                    return false;
+                });
+            }));
+            tableView.setItems(filteredData);
+        });
+
+    }
 
     private void commandSqllist() {
         //лист запросов на удаление из БД
@@ -114,25 +150,8 @@ public class EditController {
 
     }
 
-    @FXML
-    private void initialize() {
-        tableView.getSelectionModel().selectedItemProperty().addListener((observable, oldvalue, newvalue) -> {
-            editButton.setVisible(true);
-            deleteButton.setVisible(true);
-        });
-        commandSqllist();
-        combobox.setVisible(true);
-        comboboxadd("Select * From Categories");
-        productButton.fire();
-    }
 
-    protected void start(){
-        //commandSqllist();
-        //combobox.setVisible(true);
-        //comboboxadd("Select * From Categories");
-        //productButton.fire();
 
-    }
     //метод получает ссылку на TableView для заполнения Имена колон данными из полученного листа
     @FXML
     private void columnsAdd(TableView tv, ArrayList list) {
@@ -145,6 +164,20 @@ public class EditController {
             col.setText((String) list.get(i));
             tv.getColumns().add(col);
             col.prefWidthProperty().bind(tv.widthProperty().divide(list.size()));
+        }
+    }
+
+    //вывод в TableView данных из выбранной категории продуктов в combobox
+    @FXML
+    private void comboBoxSelected(ActionEvent actionEvent) {
+        if(((Universal) combobox.getValue()).getId() != 16 && ((Universal) combobox.getValue()).getId() != 0 )
+        {
+            String str = quareSqlSelect.get(3) + ((Universal) combobox.getValue()).getId();
+            getItemButton(str);
+        }
+        if(((Universal) combobox.getValue()).getId() == 16 ){
+            String str = quareSqlSelect.get(0);
+            getItemButton(str);
         }
     }
 
@@ -220,7 +253,6 @@ public class EditController {
     //реализация кнопки Добавления и Редактирование
     @FXML
     private void ClickedButtonAddorEdit() {
-
         try {
             ArrayList<String> testList = list;
             Stage stage = new Stage();
@@ -237,10 +269,12 @@ public class EditController {
                     getID = ((Universal) tableView.getSelectionModel().getSelectedItem()).getId();
                     //передаем в метод контроллера ID_product,целое число для команды sql,и id нажатой кнопки
                     editcontroller.getId(getID, 0,buttonID);
+
                 }
+                if(!editButton.isArmed()){editcontroller.getId(0, 0,buttonID);}
+
                 //срабатывает при нажатии на кнопку addButton
                 //передаем ссылки на лист с именами столбцов таблицы и лист имен категорий продуктов из combobox
-                editcontroller.getId(0, 0,buttonID);
                 editcontroller.startEdit(list, observableListComboBox);
             } else {
                 //buttonID "2" -id кнопки UserButton
@@ -255,8 +289,9 @@ public class EditController {
                     getID = ((Universal) tableView.getSelectionModel().getSelectedItem()).getId();
                     editcontroller.getId(getID, 2,buttonID);
                 }
+                if(!editButton.isArmed()) {editcontroller.getId(0, 0,buttonID);}
                 //ObservableList<Universal> obs = null;
-                editcontroller.getId(0, 0,buttonID);
+                //
                 editcontroller.startEdit(list, null);
             }
             stage.setScene(new Scene(root));
@@ -318,7 +353,7 @@ public class EditController {
         }
     }
 
-
+    @FXML
     //метод вывода сообщения на удаления записи из tableview и БД(передается номер команды quaresqlDelete)
     private void AlertAndDelete(int num) {
         Alert alert = new Alert(AlertType.CONFIRMATION);
@@ -353,18 +388,8 @@ public class EditController {
 
     }
 
-    //вывод в TableView данных из выбранной категории продуктов в combobox
-    public void comboBoxSelected(ActionEvent actionEvent) {
-            if(((Universal) combobox.getValue()).getId() != 16 && ((Universal) combobox.getValue()).getId() != 0 )
-            {
-                String str = quareSqlSelect.get(3) + ((Universal) combobox.getValue()).getId();
-                getItemButton(str);
-            }
-            if(((Universal) combobox.getValue()).getId() == 16 ){
-                String str = quareSqlSelect.get(0);
-                getItemButton(str);
-            }
-    }
+
+
 
 }
 

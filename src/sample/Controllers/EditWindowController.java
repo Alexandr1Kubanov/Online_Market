@@ -328,7 +328,6 @@ public class EditWindowController {
             //реализация Update(UserTable)
             if(buttonid.equals("2")&& id != 0)
             {
-                //todo не работает update ругается на
                 sqLiteAdapter.updateDataBase("UPDATE User SET Name = '"+infolist.get(0)+"', Number_Phone = '"+infolist.get(1)+"', Password = '"+infolist.get(2)+"' ,lable ='0'  WHERE ID_User = "+id,lastIdinDB);
 
                 sqLiteAdapter=new SQLiteAdapter();
