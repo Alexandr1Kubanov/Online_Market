@@ -59,7 +59,7 @@ public class EditController {
     private ArrayList<String> list = new ArrayList<>();
     private ObservableList<Universal> observableListComboBox;
     private ObservableList<Universal> observableList  = FXCollections.observableArrayList();
-    private  FilteredList<Universal> filteredData;
+    private FilteredList<Universal> filteredData;
     private String buttonID = "";
 
     @FXML
@@ -73,8 +73,8 @@ public class EditController {
         combobox.setVisible(true);
         comboboxadd("Select * From Categories");
         productButton.fire();
+        //filteredData = new FilteredList<>(observableList, e -> true);
 
-        filteredData = new FilteredList<>(observableList, e -> true);
         searchField.setOnKeyReleased(e ->{
             searchField.textProperty().addListener(((observableValue, oldValue, newValue) -> {
                 filteredData.setPredicate(universal->{
@@ -147,6 +147,7 @@ public class EditController {
         observableList = sql.AddTableView(str, list);
         columnsAdd(tableView, list);
         tableView.setItems(observableList);
+        filteredData = new FilteredList<>(observableList, e -> true);
 
     }
 
