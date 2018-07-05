@@ -40,7 +40,7 @@ public class EditWindowController {
 
     private void comandSql()
     {
-        quareSqlEditWindow.add("Select Product.Name_Product,Product.Producing_country,Product.Count,Product_Price.price,Product.Sale,Product.Existence From Product, Product_Price Where Product_Price.id_product = Product.ID_Product AND Product.ID_Product =");
+        quareSqlEditWindow.add("Select Product.Name_Product,Product.Producing_country,Product.Count,Product.Unit , Product_Price.price, Product.Sale, Product.Existence From Product, Product_Price Where Product_Price.id_product = Product.ID_Product AND Product.ID_Product =");
 
         quareSqlEditWindow.add("Select User.Name as 'Имя/Логин', User.Number_Phone as 'Номер Телефона', User.Password as 'Пароль', " +
                         " Addresses.City as 'Город' , Addresses.Street as 'Улица' , Addresses.House as 'Номер Дома' , Addresses.Apartment as 'Номер Квартиры' " +

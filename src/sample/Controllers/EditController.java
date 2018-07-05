@@ -49,7 +49,7 @@ public class EditController {
     @FXML
     Label categories;
     @FXML
-    AnchorPane AnchornAdmin;
+    AnchorPane AnchornAdmin,AnchornButton;
 
     private int getID;
 
@@ -64,6 +64,7 @@ public class EditController {
 
     @FXML
     private void initialize() {
+        AnchornButton.isCenterShape();
         tableView.getSelectionModel().selectedItemProperty().addListener((observable, oldvalue, newvalue) -> {
             editButton.setVisible(true);
             deleteButton.setVisible(true);
@@ -106,25 +107,25 @@ public class EditController {
 
         //лист Select запросов на выборку из таблиц БД
         quareSqlSelect.add("Select Product.ID_Product,Product.Name_Product as 'Наименование Продукта', " +
-                "Product.Producing_country as 'Страна производитель',Product.Count as 'Количество',Product_Price.Price as 'Цена', Product.Sale as 'Распродажа', Product.Existence as 'Наличие на складе' " +
+                "Product.Producing_country as 'Страна Производитель',Product.Count as 'Количество', Product.Unit as 'Ед.Измерения' ,Product_Price.Price as 'Цена', Product.Sale as 'Распродажа', Product.Existence as 'Наличие на складе' " +
                 " From Product INNER Join Product_Price ON Product_Price.id_product = Product.ID_Product ");
 
-        quareSqlSelect.add("Select User.ID_User, User.Name as 'Имя/Логин', User.Number_Phone as 'Номер Телефона', User.Password as 'Пароль', " +
+        quareSqlSelect.add("Select User.ID_User, User.Name as 'Имя/Логин', User.Number_Phone as 'Номер Тел.', User.Password as 'Пароль', " +
                 " Addresses.City as 'Город' , Addresses.Street as 'Улица' , Addresses.House as 'Номер Дома' , Addresses.Apartment as 'Номер Квартиры' " +
                 " From User Join Addresses " +
                 " Where User.ID_User = Addresses.id_user");
 
         quareSqlSelect.add("Select AllOrder.id_user,User.Name as 'ФИО',Product.Name_Product as 'Наименование Продукта', " +
-                "AllOrder.Count  as 'Количество',AllOrder.date_order as 'Дата заказа',AllOrder.Total_Price as 'Цена', " +
-                "AllOrder.Total_Unit,Addresses.City as 'Город',Addresses.Street as 'Улица', " +
-                "Addresses.House as 'Номер дома',User.Number_Phone as 'Номер телефона' " +
+                "AllOrder.Count  as 'Количество', Product.Unit as 'Ед.Измерения' , AllOrder.date_order as 'Дата заказа',AllOrder.Total_Price as 'Цена', " +
+                "AllOrder.Total_Unit as 'Общее кол-во' ,Addresses.City as 'Город',Addresses.Street as 'Улица', " +
+                "Addresses.House as 'Номер дома',User.Number_Phone as 'Номер Тел.' " +
                 "From AllOrder INNER Join User ON AllOrder.id_user =User.ID_User " +
                 "Inner Join Addresses ON AllOrder.id_user = Addresses.id_user  " +
                 "Inner Join Product ON AllOrder.id_product = Product.ID_Product");
 
         quareSqlSelect.add("Select Product.ID_Product, Product.Name_Product as 'Наименование Продукта', Product.Producing_country as 'Страна производитель', " +
-                "Product.Count as 'Количество', Product_Price.Price as 'Цена', " +
-                "(CASE WHEN Product.Sale = 0 THEN 'нет' ELSE 'да' END) as 'Распродажа', (CASE WHEN Product.Existence = 0 THEN 'нет' ELSE 'да' END) as 'Наличие на складе' " +
+                "Product.Count as 'Количество', Product.Unit as 'Единица измерения' , Product_Price.Price as 'Цена', " +
+                "(CASE WHEN Product.Sale = 0 THEN 'нет' ELSE 'да' END) as 'Распродажа', Product.Existence as 'Наличие на складе' " +
                 "From Product Join Product_Price Join categories_product " +
                 "Where Product.ID_Product=Product_Price.id_product " +
                 "AND Product.ID_Product=categories_product.ID_Product " +
@@ -171,12 +172,12 @@ public class EditController {
     //вывод в TableView данных из выбранной категории продуктов в combobox
     @FXML
     private void comboBoxSelected(ActionEvent actionEvent) {
-        if(((Universal) combobox.getValue()).getId() != 16 && ((Universal) combobox.getValue()).getId() != 0 )
+        if(((Universal) combobox.getValue()).getId() != 1 && ((Universal) combobox.getValue()).getId() != 0 )
         {
             String str = quareSqlSelect.get(3) + ((Universal) combobox.getValue()).getId();
             getItemButton(str);
         }
-        if(((Universal) combobox.getValue()).getId() == 16 ){
+        if(((Universal) combobox.getValue()).getId() == 1 ){
             String str = quareSqlSelect.get(0);
             getItemButton(str);
         }
