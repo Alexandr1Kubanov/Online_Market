@@ -14,8 +14,10 @@ import sample.SQLiteAdapter.SQLiteAdapter;
 import sample.Universal;
 
 import javax.swing.*;
+import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Optional;
 
 public class EditWindowController {
     private ArrayList<String> lableList = new ArrayList();
@@ -40,9 +42,9 @@ public class EditWindowController {
 
     private void comandSql()
     {
-        quareSqlEditWindow.add("Select Product.Name_Product,Product.Producing_country,Product.Count,Product.Unit , Product_Price.price, Product.Sale, Product.Existence From Product, Product_Price Where Product_Price.id_product = Product.ID_Product AND Product.ID_Product =");
+        quareSqlEditWindow.add("Select Product.Name_Product, Product.Producing_country, Product.Count, Product.Unit, Product_Price.price, Product.Sale , Product.Existence ,Product.ImageLink From Product, Product_Price Where Product_Price.id_product = Product.ID_Product AND Product.ID_Product =");
 
-        quareSqlEditWindow.add("Select User.Name as 'Имя/Логин', User.Number_Phone as 'Номер Телефона', User.Password as 'Пароль', " +
+        quareSqlEditWindow.add("Select User.Name as 'Имя/Логин', User.Number_Phone as 'Номер Тел.', User.Password as 'Пароль', " +
                         " Addresses.City as 'Город' , Addresses.Street as 'Улица' , Addresses.House as 'Номер Дома' , Addresses.Apartment as 'Номер Квартиры' " +
                         " From User Join Addresses " +
                         " Where User.ID_User = Addresses.id_user AND Addresses.id_user =");
@@ -124,21 +126,21 @@ public class EditWindowController {
         {
             String l = lableList.get(i);
 
-            if (l.equals("Наличие на складе"))
+            if (l.equals("Наличие"))
             {
                 comboBoxExistence.getItems().add("В наличие");
                 comboBoxExistence.getItems().add("Нет на складе");
                 Label label = new Label();
-                label.setText(lableList.get(i));
+                label.setText("Наличие на складе");
                 vbox1.getChildren().add(label);
                 vbox1.getChildren().add(comboBoxExistence);
                 collectorlist.add(comboBoxExistence.getItems().get(0).toString());
                 continue;
             }
-            if (l.equals("Страна производитель"))
+            if (l.equals("Страна Произв."))
             {
                 Label label = new Label();
-                label.setText(l);
+                label.setText("Страна Производитель");
                 vbox1.getChildren().add(label);
                 vbox1.getChildren().add(comboboxCountry);
                 collectorlist.add("");
@@ -181,14 +183,30 @@ public class EditWindowController {
 
     //Action кнопки подтвердить
     public void getResultFromWindow(ActionEvent actionEvent) {
-        getInfoEdit(allInfoFromWindow);
+        int countemptyrow = 0;
+        for(int i = 0; i<textFielfWL.size();i++){
+            if(textFielfWL.get(i).getText().equals("")|| textFielfWL.get(i).getText().equals("Введите данные"))
+            {
+                countemptyrow++;
+                textFielfWL.get(i).setText("Введите данные");
+                textFielfWL.get(i).setStyle("-fx-text-inner-color: red;");
+                continue;
+            }
+        }
+        if(countemptyrow > 0) {
+            Alert();
+        }
+        else if(countemptyrow == 0){
+            getInfoEdit(allInfoFromWindow);
+        }
+
     }
 
     //метод обработки введенных данных при нажатии кнопки подтвердить
     private void getInfoEdit(ArrayList allInfoFromWindow) {
         int count = 0;
         //обработка окна User
-        if (allInfoFromWindow.isEmpty())
+        if (ComboBoxList == null && allInfoFromWindow.isEmpty())
         {
             for (int i = 0; i < collectorlist.size(); i++) {
                 if (!collectorlist.isEmpty())
@@ -196,7 +214,7 @@ public class EditWindowController {
                     allInfoFromWindow.add(textFielfWL.get(i).getText());
                 }
             }
-
+            UserAddEdit(allInfoFromWindow);
         }
         //обработка окна Product
         if(ComboBoxList != null && allInfoFromWindow.isEmpty()) {
@@ -209,12 +227,12 @@ public class EditWindowController {
                         allInfoFromWindow.add(comboboxCountry.getValue().toString());
                         continue;
                     }
-                    if (i == 5)
+                    if (i == 6)
                     {
                         allInfoFromWindow.add(comboBoxSale.getValue().toString());
                         continue;
                     }
-                    if (i == 6)
+                    if (i == 7)
                     {
                         allInfoFromWindow.add(comboBoxExistence.getValue().toString());
                         continue;
@@ -226,7 +244,6 @@ public class EditWindowController {
             }
             ProductAddEdit(allInfoFromWindow);
         }
-        UserAddEdit(allInfoFromWindow);
         //InsertAndUpdateDB(allInfoFromWindow);
     }
 
@@ -244,8 +261,8 @@ public class EditWindowController {
             if (buttonid.equals("1")&& id == 0)
             {
                 //заносит данные в таблицу Product
-                sqLiteAdapter.updateDataBase("Insert Into Product(Name_Product,Producing_country,Count,Sale,Existence)Values('" + infolist.get(1) +
-                        "','" + infolist.get(2) + "','" + infolist.get(3) + "','" + infolist.get(5) + "','" + infolist.get(6) + "')",lastIdinDB);
+                sqLiteAdapter.updateDataBase("Insert Into Product(Name_Product ,Producing_country ,Count ,Unit ,Sale ,Existence ,ImageLink )Values('" + infolist.get(1) +
+                        "','" + infolist.get(2) + "','" + infolist.get(3) + "','" + infolist.get(4) + "','" + infolist.get(6) + "','"+ infolist.get(7) + "','" + infolist.get(8) + "')",lastIdinDB);
                 int idproduct = lastIdinDB[0];
 
                 long curTime = System.currentTimeMillis();
@@ -254,7 +271,7 @@ public class EditWindowController {
                 sqLiteAdapter=new SQLiteAdapter();
                 //заносит данные в таблицу Product_Price
                 sqLiteAdapter.updateDataBase("Insert Into Product_Price(id_product,date_start,price)Values('"
-                        +lastIdinDB[0]+"','"+ curStringDate+"','"+infolist.get(4)+"')",lastIdinDB);
+                        +lastIdinDB[0]+"','"+ curStringDate+"','"+infolist.get(5)+"')",lastIdinDB);
 
                 //присваиваем переменной ID выбранной категории
                 int idcategories=0;
@@ -274,7 +291,7 @@ public class EditWindowController {
             //реализация Update(ProductTable)
             if(buttonid.equals("1")&& id != 0)
             {
-                sqLiteAdapter.updateDataBase("UPDATE Product SET Name_Product= '"+infolist.get(1)+"', Producing_country= '"+infolist.get(2)+"', Count= '"+infolist.get(3)+"' , Sale='"+infolist.get(5)+"', Existence='"+infolist.get(6)+"' WHERE ID_Product ='"+id+"'",lastIdinDB);
+                sqLiteAdapter.updateDataBase("UPDATE Product SET Name_Product= '"+infolist.get(1)+"', Producing_country= '"+infolist.get(2)+"', Count= '"+infolist.get(3)+"' ,Unit='"+infolist.get(4)+"', Sale='"+infolist.get(6)+"', Existence='"+infolist.get(7)+"', ImageLink='"+infolist.get(8)+"' WHERE ID_Product ='"+id+"'",lastIdinDB);
                 //int idproduct = lastIdinDB[0];
 
                 long curTime = System.currentTimeMillis();
@@ -282,7 +299,7 @@ public class EditWindowController {
 
                 sqLiteAdapter=new SQLiteAdapter();
                 //заносит данные в таблицу Product_Price
-                sqLiteAdapter.updateDataBase("Update Product_Price SET id_product='"+id+"', date_start='"+curStringDate+"', price = '"+infolist.get(4)+"' WHERE ID_Product ='"+id+"'",lastIdinDB);
+                sqLiteAdapter.updateDataBase("Update Product_Price SET id_product='"+id+"', date_start='"+curStringDate+"', price = '"+infolist.get(5)+"' WHERE ID_Product ='"+id+"'",lastIdinDB);
 
                 //присваиваем переменной ID выбранной категории
                 int idcategories=0;
@@ -347,5 +364,17 @@ public class EditWindowController {
         //EditController ec  = new EditController();
         //ec.start();
 
+    }
+
+
+    private void Alert(){
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setHeaderText("Внимание");
+        alert.setContentText("Вы забыли ввести все данные");
+        alert.setTitle("");
+        ButtonType Yes = new ButtonType("ок");
+        alert.getButtonTypes().clear();
+        alert.getButtonTypes().addAll(Yes);
+        Optional<ButtonType> option = alert.showAndWait();
     }
 }

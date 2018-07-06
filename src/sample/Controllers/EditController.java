@@ -64,7 +64,7 @@ public class EditController {
 
     @FXML
     private void initialize() {
-        AnchornButton.isCenterShape();
+        tableView.setFixedCellSize(50);
         tableView.getSelectionModel().selectedItemProperty().addListener((observable, oldvalue, newvalue) -> {
             editButton.setVisible(true);
             deleteButton.setVisible(true);
@@ -106,8 +106,8 @@ public class EditController {
         quareSqlDelete.add("Delete From AllOrder Where ID_Order =");
 
         //лист Select запросов на выборку из таблиц БД
-        quareSqlSelect.add("Select Product.ID_Product,Product.Name_Product as 'Наименование Продукта', " +
-                "Product.Producing_country as 'Страна Производитель',Product.Count as 'Количество', Product.Unit as 'Ед.Измерения' ,Product_Price.Price as 'Цена', Product.Sale as 'Распродажа', Product.Existence as 'Наличие на складе' " +
+        quareSqlSelect.add("Select Product.ID_Product,Product.Name_Product as 'Наименование', " +
+                "Product.Producing_country as 'Страна Произв.',Product.Count as 'Коли-во', Product.Unit as 'Ед.Измерения' ,Product_Price.Price as 'Цена', Product.Sale as 'Распродажа', Product.Existence as 'Наличие' , Product.ImageLink as 'Ссылка'" +
                 " From Product INNER Join Product_Price ON Product_Price.id_product = Product.ID_Product ");
 
         quareSqlSelect.add("Select User.ID_User, User.Name as 'Имя/Логин', User.Number_Phone as 'Номер Тел.', User.Password as 'Пароль', " +
@@ -158,6 +158,7 @@ public class EditController {
     @FXML
     private void columnsAdd(TableView tv, ArrayList list) {
         tv.getColumns().clear();
+
 
         for (int i = 0; i < list.size(); i++) {
             TableColumn<Universal, String> col = new TableColumn<>();
