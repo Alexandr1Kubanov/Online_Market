@@ -42,10 +42,13 @@ public class EditWindowController {
 
     private void comandSql()
     {
-        quareSqlEditWindow.add("Select Product.Name_Product, Product.Producing_country, Product.Count, Product.Unit, Product_Price.price, Product.Sale , Product.Existence ,Product.ImageLink From Product, Product_Price Where Product_Price.id_product = Product.ID_Product AND Product.ID_Product =");
+        quareSqlEditWindow.add("Select Product.Name_Product, Product.Producing_country, Product.Count, Product.Unit," +
+                " Product_Price.price, Product.Sale , Product.Existence ,Product.ImageLink From Product," +
+                " Product_Price Where Product_Price.id_product = Product.ID_Product AND Product.ID_Product =");
 
         quareSqlEditWindow.add("Select User.Name as 'Имя/Логин', User.Number_Phone as 'Номер Тел.', User.Password as 'Пароль', " +
-                        " Addresses.City as 'Город' , Addresses.Street as 'Улица' , Addresses.House as 'Номер Дома' , Addresses.Apartment as 'Номер Квартиры' " +
+                        " Addresses.City as 'Город' , Addresses.Street as 'Улица' , Addresses.House as 'Номер Дома' ," +
+                        " Addresses.Apartment as 'Номер Квартиры' " +
                         " From User Join Addresses " +
                         " Where User.ID_User = Addresses.id_user AND Addresses.id_user =");
 
@@ -244,13 +247,8 @@ public class EditWindowController {
             }
             ProductAddEdit(allInfoFromWindow);
         }
-        //InsertAndUpdateDB(allInfoFromWindow);
     }
 
-    //метод принимает лист заполненными данными из окна
-    /*private void InsertAndUpdateDB(ArrayList infolist){
-       ProductAddEdit(infolist);
-    }*/
 
     //метод передает sql запрос с полученными из контроллера данными в БД(реализации добавления в ProductTable)
     private void ProductAddEdit(ArrayList infolist){
@@ -261,8 +259,11 @@ public class EditWindowController {
             if (buttonid.equals("1")&& id == 0)
             {
                 //заносит данные в таблицу Product
-                sqLiteAdapter.updateDataBase("Insert Into Product(Name_Product ,Producing_country ,Count ,Unit ,Sale ,Existence ,ImageLink )Values('" + infolist.get(1) +
-                        "','" + infolist.get(2) + "','" + infolist.get(3) + "','" + infolist.get(4) + "','" + infolist.get(6) + "','"+ infolist.get(7) + "','" + infolist.get(8) + "')",lastIdinDB);
+                sqLiteAdapter.updateDataBase("Insert Into Product(Name_Product ,Producing_country " +
+                        ",Count ,Unit ,Sale ,Existence ,ImageLink )" +
+                        "Values('" + infolist.get(1) +
+                        "','" + infolist.get(2) + "','" + infolist.get(3) + "','" + infolist.get(4) + "'" +
+                        ",'" + infolist.get(6) + "','"+ infolist.get(7) + "','" + infolist.get(8) + "')",lastIdinDB);
                 int idproduct = lastIdinDB[0];
 
                 long curTime = System.currentTimeMillis();
@@ -291,15 +292,20 @@ public class EditWindowController {
             //реализация Update(ProductTable)
             if(buttonid.equals("1")&& id != 0)
             {
-                sqLiteAdapter.updateDataBase("UPDATE Product SET Name_Product= '"+infolist.get(1)+"', Producing_country= '"+infolist.get(2)+"', Count= '"+infolist.get(3)+"' ,Unit='"+infolist.get(4)+"', Sale='"+infolist.get(6)+"', Existence='"+infolist.get(7)+"', ImageLink='"+infolist.get(8)+"' WHERE ID_Product ='"+id+"'",lastIdinDB);
-                //int idproduct = lastIdinDB[0];
+                sqLiteAdapter.updateDataBase("UPDATE Product SET Name_Product= '"+infolist.get(1)+"', " +
+                        " Producing_country= '"+infolist.get(2)+"', Count= '"+infolist.get(3)+"' ," +
+                        " Unit='"+infolist.get(4)+"', Sale='"+infolist.get(6)+"', Existence='"+infolist.get(7)+"', " +
+                        " ImageLink='"+infolist.get(8)+"' WHERE ID_Product ='"+id+"'",lastIdinDB);
+
 
                 long curTime = System.currentTimeMillis();
                 String curStringDate = new SimpleDateFormat("dd.MM.yyyy").format(curTime);
 
                 sqLiteAdapter=new SQLiteAdapter();
                 //заносит данные в таблицу Product_Price
-                sqLiteAdapter.updateDataBase("Update Product_Price SET id_product='"+id+"', date_start='"+curStringDate+"', price = '"+infolist.get(5)+"' WHERE ID_Product ='"+id+"'",lastIdinDB);
+                sqLiteAdapter.updateDataBase("Update Product_Price SET id_product='"+id+"', " +
+                        " date_start='"+curStringDate+"', price = '"+infolist.get(5)+"'" +
+                        " WHERE ID_Product ='"+id+"'",lastIdinDB);
 
                 //присваиваем переменной ID выбранной категории
                 int idcategories=0;
