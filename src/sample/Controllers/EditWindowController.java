@@ -185,6 +185,7 @@ public class EditWindowController {
     }
 
     //Action кнопки подтвердить
+    @FXML
     public void getResultFromWindow(ActionEvent actionEvent) {
         int countemptyrow = 0;
         for(int i = 0; i<textFielfWL.size();i++){

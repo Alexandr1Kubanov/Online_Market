@@ -81,7 +81,7 @@ public class Controller {
                 Stage stage = (Stage) enter.getScene().getWindow();
                 stage.close();
 
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../fxml/UserWindowMarket.fxml"));
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../fxml/UserWindowMarket2.fxml"));
                 Parent root1 = null;
                 try {
                     root1 = fxmlLoader.load();
