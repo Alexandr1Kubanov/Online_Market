@@ -167,6 +167,7 @@ public class UserController {
     private void addtoGridPane(ObservableList<Universal> list) {
         ArrayList<GridPane> gridPaneArrayList = new ArrayList<>();
         Class<?> clazz = this.getClass();
+        int sitenumber=0;
         int rowindex = 0;
         int columIndex = 0;
         int count = 0;
@@ -249,6 +250,7 @@ public class UserController {
             AnchorPane anchorProduct = new AnchorPane();
             anchorProduct.getChildren().addAll(GridProduct2);
             Tab tab = new Tab();
+            tab.setText("Стр."+ ++sitenumber);
             tab.setContent(anchorProduct);
             PanePreviewProduct.getTabs().add(tab);
         }
