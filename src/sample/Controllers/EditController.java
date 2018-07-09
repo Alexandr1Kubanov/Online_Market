@@ -272,7 +272,6 @@ public class EditController {
                     getID = ((Universal) tableView.getSelectionModel().getSelectedItem()).getId();
                     //передаем в метод контроллера ID_product,целое число для команды sql,и id нажатой кнопки
                     editcontroller.getId(getID, 0,buttonID);
-
                 }
                 if(!editButton.isArmed()){editcontroller.getId(0, 0,buttonID);}
 
