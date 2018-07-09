@@ -51,6 +51,10 @@ public class EditController {
     @FXML
     AnchorPane AnchornAdmin,AnchornButton;
 
+    public  String country="";
+    public  String sale="";
+    public  String existence="";
+
     private int getID;
 
     //лист команд для запросов
@@ -107,9 +111,9 @@ public class EditController {
 
         //лист Select запросов на выборку из таблиц БД
         quareSqlSelect.add("Select Product.ID_Product,Product.Name_Product as 'Наименование', " +
-                " Product.Producing_country as 'Страна Произв.',Product.Count as 'Коли-во', Product.Unit as 'Ед.Измерения' ," +
-                " Product_Price.Price as 'Цена', Product.Sale as 'Распродажа', Product.Existence as 'Наличие' , " +
-                " Product.ImageLink as 'Ссылка'" +
+                " Product.Producing_country as 'Страна Произв.',Product.Count as 'Кол-во', Product.Unit as 'Ед.Измерения' ," +
+                " Product_Price.Price as 'Цена', Product.Sale as 'Распродажа', Product.Existence as 'Наличие' ," +
+                " Product.ImageLink as 'Ссылка' " +
                 " From Product INNER Join Product_Price ON Product_Price.id_product = Product.ID_Product ");
 
         quareSqlSelect.add("Select User.ID_User, User.Name as 'Имя/Логин', User.Number_Phone as 'Номер Тел.'," +
@@ -119,25 +123,27 @@ public class EditController {
                 " From User Join Addresses " +
                 " Where User.ID_User = Addresses.id_user");
 
-        quareSqlSelect.add("Select AllOrder.id_user,User.Name as 'ФИО',Product.Name_Product as 'Наименование Продукта' ," +
-                " AllOrder.Count  as 'Количество', Product.Unit as 'Ед.Измерения' , AllOrder.date_order as 'Дата заказа' ," +
+        quareSqlSelect.add("Select AllOrder.id_user,User.Name as 'ФИО',Product.Name_Product as 'Наименование Продукта', " +
+                " AllOrder.Count  as 'Количество', Product.Unit as 'Ед.Измерения' , AllOrder.date_order as 'Дата заказа'," +
                 " AllOrder.Total_Price as 'Цена', " +
-                " AllOrder.Total_Unit as 'Общее кол-во' ,Addresses.City as 'Город',Addresses.Street as 'Улица' ," +
+                " AllOrder.Total_Unit as 'Общее кол-во' ,Addresses.City as 'Город',Addresses.Street as 'Улица', " +
                 " Addresses.House as 'Номер дома',User.Number_Phone as 'Номер Тел.' " +
                 " From AllOrder INNER Join User ON AllOrder.id_user =User.ID_User " +
                 " Inner Join Addresses ON AllOrder.id_user = Addresses.id_user  " +
-                " Inner Join Product ON AllOrder.id_product = Product.ID_Product ");
+                " Inner Join Product ON AllOrder.id_product = Product.ID_Product");
 
-        quareSqlSelect.add("Select Product.ID_Product, Product.Name_Product as 'Наименование Продукта' ," +
-                " Product.Producing_country as 'Страна производитель' ," +
+        quareSqlSelect.add("Select Product.ID_Product, Product.Name_Product as 'Наименование Продукта'," +
+                " Product.Producing_country as 'Страна производитель', " +
                 " Product.Count as 'Количество', Product.Unit as 'Единица измерения' ," +
-                " Product_Price.Price as 'Цена', " +
-                "(CASE WHEN Product.Sale = 0 THEN 'нет' ELSE 'да' END) as 'Распродажа' ," +
+                " Product_Price.Price as 'Цена', Product.Sale  as 'Распродажа'," +
                 " Product.Existence as 'Наличие на складе' " +
                 " From Product Join Product_Price Join categories_product " +
                 " Where Product.ID_Product=Product_Price.id_product " +
                 " AND Product.ID_Product=categories_product.ID_Product " +
                 " AND categories_product.ID_Categories = ");
+
+        //лист Insert запросов в БД
+        //quareSqlSelect.add("Insert Into Product(ID_Product,Name_Product,Old_Price,Rating,Unit,Presence,Sale)Values(");
     }
 
     void idset(int a) {
@@ -156,6 +162,7 @@ public class EditController {
         filteredData = new FilteredList<>(observableList, e -> true);
 
     }
+
 
 
     //метод получает ссылку на TableView для заполнения Имена колон данными из полученного листа
@@ -265,7 +272,7 @@ public class EditController {
             Stage stage = new Stage();
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../fxml/EditWindow.fxml"));
             Parent root = fxmlLoader.load();
-            EditWindowController editcontroller = fxmlLoader.getController();
+            EditWindowController editWinController = fxmlLoader.getController();
 
             //переменной buttonID присваевается значение при нажатии кнопок таблиц с данными
             if (buttonID.equals("1"))
@@ -274,31 +281,36 @@ public class EditController {
                 { //если была нажата кнопка editButton
                     //получаем ID выбранной в TableView ячейки
                     getID = ((Universal) tableView.getSelectionModel().getSelectedItem()).getId();
+                    //получаем страну производителя,распродажу и наличие
+                    sale =  ((Universal) tableView.getSelectionModel().getSelectedItem()).property(5).getValue();
+                    existence = ((Universal) tableView.getSelectionModel().getSelectedItem()).property(6).getValue();
+                    country =  ((Universal) tableView.getSelectionModel().getSelectedItem()).property(1).getValue();
+                    editWinController.getInfoedit(sale,existence,country);
                     //передаем в метод контроллера ID_product,целое число для команды sql,и id нажатой кнопки
-                    editcontroller.getId(getID, 0,buttonID);
+                    editWinController.getId(getID, 0,buttonID);
                 }
-                if(!editButton.isArmed()){editcontroller.getId(0, 0,buttonID);}
+                if(!editButton.isArmed()){editWinController.getId(0, 0,buttonID);}
 
                 //срабатывает при нажатии на кнопку addButton
                 //передаем ссылки на лист с именами столбцов таблицы и лист имен категорий продуктов из combobox
-                editcontroller.startEdit(list, observableListComboBox);
+                editWinController.startEdit(list, observableListComboBox);
             } else {
                 //buttonID "2" -id кнопки UserButton
                 if (editButton.isArmed() && buttonID.equals("2"))
                 {
                     getID = ((Universal) tableView.getSelectionModel().getSelectedItem()).getId();
-                    editcontroller.getId(getID, 1,buttonID);
+                    editWinController.getId(getID, 1,buttonID);
                 }
                 //buttonID "3" -id кнопки OrderButton
                 if (editButton.isArmed() && buttonID.equals("3"))
                 {
                     getID = ((Universal) tableView.getSelectionModel().getSelectedItem()).getId();
-                    editcontroller.getId(getID, 2,buttonID);
+                    editWinController.getId(getID, 2,buttonID);
                 }
-                if(!editButton.isArmed()) {editcontroller.getId(0, 0,buttonID);}
+                if(!editButton.isArmed()) {editWinController.getId(0, 0,buttonID);}
                 //ObservableList<Universal> obs = null;
                 //
-                editcontroller.startEdit(list, null);
+                editWinController.startEdit(list, null);
             }
             stage.setScene(new Scene(root));
             stage.setTitle("");
@@ -391,7 +403,12 @@ public class EditController {
                 Label label = new Label("Cancelled!");
             }
         }
+
     }
+
+
+
+
 }
 
 

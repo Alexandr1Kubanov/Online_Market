@@ -37,7 +37,9 @@ public class EditWindowController {
     private String buttonid;
     private int id;
     private int[]lastIdinDB = new int[1];
-
+    public  String country="";
+    public  String sale="";
+    public  String existence="";
 
 
     private void comandSql()
@@ -88,6 +90,11 @@ public class EditWindowController {
         comandSql();
     }
 
+    void getInfoedit(String sale,String existence,String counrty){
+        this.sale = sale;
+        this.existence = existence;
+        this.country = counrty;
+    }
     void getId(int id, int SqlCommand,String idButton) {
         this.buttonid = idButton;
         this.id = id;
@@ -120,6 +127,7 @@ public class EditWindowController {
             for (int i = 0; i <= ComboBoxList.size() - 1; i++) {
                 comboboxCategory.getItems().add(ComboBoxList.get(i).property(0).getValue());
             }
+
             vbox1.getChildren().addAll(comboboxCategory);
             collectorlist.add(comboboxCategory.getPromptText());
         }
@@ -135,6 +143,7 @@ public class EditWindowController {
                 comboBoxExistence.getItems().add("Нет на складе");
                 Label label = new Label();
                 label.setText("Наличие на складе");
+                comboBoxExistence.setValue(existence);
                 vbox1.getChildren().add(label);
                 vbox1.getChildren().add(comboBoxExistence);
                 collectorlist.add(comboBoxExistence.getItems().get(0).toString());
@@ -144,6 +153,7 @@ public class EditWindowController {
             {
                 Label label = new Label();
                 label.setText("Страна Производитель");
+                comboboxCountry.setValue(country);
                 vbox1.getChildren().add(label);
                 vbox1.getChildren().add(comboboxCountry);
                 collectorlist.add("");
@@ -153,6 +163,7 @@ public class EditWindowController {
             {
                 comboBoxSale.getItems().add("Да");
                 comboBoxSale.getItems().add("Нет");
+                comboBoxSale.setValue(sale);
                 Label label = new Label();
                 label.setText(l);
                 vbox1.getChildren().add(label);
@@ -185,7 +196,6 @@ public class EditWindowController {
     }
 
     //Action кнопки подтвердить
-    @FXML
     public void getResultFromWindow(ActionEvent actionEvent) {
         int countemptyrow = 0;
         for(int i = 0; i<textFielfWL.size();i++){

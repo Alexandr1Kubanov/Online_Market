@@ -22,11 +22,6 @@
                 </font>
                 <effect>
                     <Lighting diffuseConstant="2.0" specularConstant="2.0" specularExponent="40.0" surfaceScale="0.22">
-                        <bumpInput>
-                            <ColorInput />
-                        </bumpInput>
-                        <light>
-                        </light>
                     </Lighting>
                 </effect>
                 <opaqueInsets>
