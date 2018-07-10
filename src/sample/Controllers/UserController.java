@@ -76,7 +76,7 @@ public class UserController {
     private ObservableList<Universal> observableListComboBox;
     private ObservableList<Universal> observableList = FXCollections.observableArrayList();
     private int[]lastIdinDB = new int[1];
-
+    int [] countProductFromDB = new int[1];
     private  int iduser;
 
 
@@ -269,7 +269,11 @@ public class UserController {
                             //записываем в страницу корзины данные о добавленном продукте
                             Label text = new Label("\n"+"Вы добавили: " + "\n" + list.get(num).property(0).getValue() + " в количестве "+ countBuy + unit );
 
-
+                            //todo решить вопрос если продукт решили удалить из списка
+                            //todo вывести TotalPrice на окно пользователя
+                            //todo адрес доставки нужно указать перед тем как добавлять Чек в БД
+                            //todo реализовать завершение покупки
+                            //
                             vBox.getChildren().addAll(text,buttondel);
                             scrollPaneBasket.setContent(vBox);
 
@@ -318,7 +322,7 @@ public class UserController {
     }
 
     //метод сборки покупок
-    private void buildpurchases(String id,int countBuy,double price){
+    private void buildpurchases(String idproduct,int countBuy,double price){
 
 
         double totalPrice = countBuy * price;
@@ -327,12 +331,21 @@ public class UserController {
         long curTime = System.currentTimeMillis();
         String curStringDate = new SimpleDateFormat("dd.MM.yyyy").format(curTime);
 
-        SQLiteAdapter sqLiteAdapter = new SQLiteAdapter();
+        SQLiteAdapter sqLiteAdapter1 = new SQLiteAdapter();
+        sqLiteAdapter1.countproduct("Select Count from Product Where ID_Product ='"+idproduct+"'",countProductFromDB);
+        int countProdDB = countProductFromDB[0] - countBuy;
 
-        sqLiteAdapter.updateDataBase("Insert INTO AllOrder (id_user,id_product,Count,date_order," +
-                "Total_Price,Total_Unit,id_address,phone_user)Values(' " + iduser + "','"+ id + "','"
+        SQLiteAdapter sqLiteAdapter2 = new SQLiteAdapter();
+
+        sqLiteAdapter2.updateDataBase("Insert INTO AllOrder (id_user,id_product,Count,date_order," +
+                "Total_Price,Total_Unit,id_address,phone_user)Values(' " + iduser + "','"+ idproduct + "','"
                 + countBuy + "','" + curStringDate + "','" + String.valueOf(totalPrice)  + "','"+ countBuy + "','"
                  + addresses +"','"+ number + "')",lastIdinDB);
+
+
+        SQLiteAdapter sqLiteAdapter3 = new SQLiteAdapter();
+        sqLiteAdapter3.updateDataBase("Update Product  SET Count = '" + countProdDB + "'" +
+                " WHERE ID_Product ='" + idproduct + "'",lastIdinDB);
 
 
     }
