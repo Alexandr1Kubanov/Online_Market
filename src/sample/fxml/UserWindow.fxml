@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #D7E3F9;" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controllers.UserController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="850.0" style="-fx-background-color: #D7E3F9;" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controllers.UserController">
    <children>
       <AnchorPane layoutX="302.0" layoutY="5.0" prefHeight="27.0" prefWidth="350.0">
          <children>
@@ -79,20 +79,20 @@
          <children>
             <TabPane fx:id="TabPanInfo" prefHeight="412.0" prefWidth="249.0" style="-fx-border-color: #FFFFFF;" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="0.0">
                <tabs>
-                  <Tab fx:id="TabInfo" text="Вкладка для Info">
-                     <content>
-                        <AnchorPane fx:id="AnchorInfo" minHeight="0.0" minWidth="0.0" prefHeight="376.0" prefWidth="137.0">
-                           <children>
-                              <Button layoutX="14.0" layoutY="339.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="221.0" style="-fx-background-radius: 10;" text="Добавить в Корзину" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" />
-                           </children>
-                        </AnchorPane>
-                     </content>
-                  </Tab>
                   <Tab fx:id="TabBasket" text="Вкладка Корзина">
                      <content>
                         <AnchorPane fx:id="AnchorBasket" minHeight="0.0" minWidth="0.0" prefHeight="376.0" prefWidth="137.0">
                            <children>
                               <ScrollPane fx:id="scrollPaneBasket" layoutX="14.0" layoutY="14.0" prefHeight="349.0" prefWidth="215.0" style="-fx-background-color: #FFFFFF;" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0" />
+                           </children>
+                        </AnchorPane>
+                     </content>
+                  </Tab>
+                  <Tab fx:id="TabInfo" text="Вкладка для Info">
+                     <content>
+                        <AnchorPane fx:id="AnchorInfo" minHeight="0.0" minWidth="0.0" prefHeight="376.0" prefWidth="137.0">
+                           <children>
+                              <Button layoutX="14.0" layoutY="339.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="221.0" style="-fx-background-radius: 10;" text="Оформить заказ" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" />
                            </children>
                         </AnchorPane>
                      </content>

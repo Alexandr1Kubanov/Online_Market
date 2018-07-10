@@ -19,7 +19,8 @@ import sample.SQLiteAdapter.SQLiteAdapter;
 import sample.Universal;
 
 import java.io.InputStream;
-import java.util.ArrayList;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class UserController {
 
@@ -68,11 +69,16 @@ public class UserController {
     @FXML
     Button countButtonlable;
 
+
+    private Map<Integer,ArrayList<Integer>> basketList = new HashMap<>();
     private ArrayList<String> quareSqlSelect = new ArrayList<>();
     private ArrayList<String> list = new ArrayList<>();
     private ObservableList<Universal> observableListComboBox;
     private ObservableList<Universal> observableList = FXCollections.observableArrayList();
-    int countBasketText = 0;
+    private int[]lastIdinDB = new int[1];
+
+    private  int iduser;
+
 
 
     //команды sql запросов
@@ -103,6 +109,11 @@ public class UserController {
         getItem(quareSqlSelect.get(0));
     }
 
+
+    public void setIduser(int iduser) {
+        this.iduser = iduser;
+    }
+
     //метода собирает данные о категориях продуктов из БД
     @FXML
     private void getItem(String str) {
@@ -121,6 +132,7 @@ public class UserController {
         observableListComboBox = sql.AddTableView(str, list);
         if (!observableListComboBox.isEmpty()) {
             Categories.setItems(observableListComboBox);
+            Categories.setValue(Categories.getItems().get(0));
             convertInComboBox(Categories);
         } else {
             System.out.println("Нет данных");
@@ -243,22 +255,33 @@ public class UserController {
 
                         @Override
                         public void handle(ActionEvent event) {
-                            int num = Integer.parseInt(button.getId());
                             //кнопка удаления из корзины
+
                             Button buttondel=new Button();
                             buttondel.setText("Убрать из списка");
 
-                            String unit = list.get(num).property(3).getValue();
-                            Label text = new Label("\n"+"Вы добавили: " + "\n" + list.get(num).property(0).getValue() + " в количестве "+ tf.getText()+ unit );
+                            int num = Integer.parseInt(button.getId());
+                            String unit = list.get(num).property(3).getValue();      //Ед.Измерения
+                            String id = String.valueOf( list.get(num).getId());         //id продукта
+                            int countBuy =  Integer.parseInt(tf.getText());                            //количество
+                            double price =Double.parseDouble(list.get(num).property(4).getValue());     //цена
+
+                            //записываем в страницу корзины данные о добавленном продукте
+                            Label text = new Label("\n"+"Вы добавили: " + "\n" + list.get(num).property(0).getValue() + " в количестве "+ countBuy + unit );
+
+
                             vBox.getChildren().addAll(text,buttondel);
                             scrollPaneBasket.setContent(vBox);
 
                             int count = Integer.parseInt(countButtonlable.getText());
                             count++;
+                            buildpurchases(id,countBuy,price);
+
                             countButtonlable.setStyle("-fx-background-color : #FFFFFF;" + "-fx-background-radius: 10;");
                             countButtonlable.setText(String.valueOf(count));
                             tf.setText("1");
 
+                            //кнопка удаление из корзины
                             buttondel.setOnAction(new EventHandler<ActionEvent>() {
                                 @Override
                                 public void handle(ActionEvent event) {
@@ -267,6 +290,7 @@ public class UserController {
                                     count--;
                                     countButtonlable.setStyle("-fx-background-color : #FFFFFF;" + "-fx-background-radius: 10;");
                                     countButtonlable.setText(String.valueOf(count));
+
                                 }
                             });
                         }
@@ -291,5 +315,25 @@ public class UserController {
             tab.setContent(anchorProduct);
             PanePreviewProduct.getTabs().add(tab);
         }
+    }
+
+    //метод сборки покупок
+    private void buildpurchases(String id,int countBuy,double price){
+
+
+        double totalPrice = countBuy * price;
+        String number="3535345";
+        String addresses = "3";
+        long curTime = System.currentTimeMillis();
+        String curStringDate = new SimpleDateFormat("dd.MM.yyyy").format(curTime);
+
+        SQLiteAdapter sqLiteAdapter = new SQLiteAdapter();
+
+        sqLiteAdapter.updateDataBase("Insert INTO AllOrder (id_user,id_product,Count,date_order," +
+                "Total_Price,Total_Unit,id_address,phone_user)Values(' " + iduser + "','"+ id + "','"
+                + countBuy + "','" + curStringDate + "','" + String.valueOf(totalPrice)  + "','"+ countBuy + "','"
+                 + addresses +"','"+ number + "')",lastIdinDB);
+
+
     }
 }

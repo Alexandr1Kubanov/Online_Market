@@ -34,6 +34,7 @@ public class Controller {
         String fromPwd = password.getText();
         String fromLogin = login.getText();
 
+
         if(!fromLogin.isEmpty()&&!fromPwd.isEmpty()) {
             SQLiteAdapter sqLiteAdapter = new SQLiteAdapter();
 
@@ -91,6 +92,9 @@ public class Controller {
                 Scene scene = new Scene(root1);
                 stage.setScene(scene);
                 stage.show();
+
+                UserController uc = fxmlLoader.getController();
+                uc.setIduser(userId);
             }
         }
     }
