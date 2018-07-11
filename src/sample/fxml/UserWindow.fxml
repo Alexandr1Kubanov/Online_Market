@@ -2,6 +2,7 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
@@ -14,6 +15,7 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #D7E3F9;" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controllers.UserController">
    <children>
@@ -79,20 +81,20 @@
          <children>
             <TabPane fx:id="TabPanInfo" prefHeight="412.0" prefWidth="249.0" style="-fx-border-color: #FFFFFF;" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="0.0">
                <tabs>
-                  <Tab fx:id="TabInfo" text="Вкладка для Info">
-                     <content>
-                        <AnchorPane fx:id="AnchorInfo" minHeight="0.0" minWidth="0.0" prefHeight="376.0" prefWidth="137.0">
-                           <children>
-                              <Button layoutX="14.0" layoutY="339.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="221.0" style="-fx-background-radius: 10;" text="Добавить в Корзину" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" />
-                           </children>
-                        </AnchorPane>
-                     </content>
-                  </Tab>
                   <Tab fx:id="TabBasket" text="Вкладка Корзина">
                      <content>
                         <AnchorPane fx:id="AnchorBasket" minHeight="0.0" minWidth="0.0" prefHeight="376.0" prefWidth="137.0">
                            <children>
                               <ScrollPane fx:id="scrollPaneBasket" layoutX="14.0" layoutY="14.0" prefHeight="349.0" prefWidth="215.0" style="-fx-background-color: #FFFFFF;" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0" />
+                           </children>
+                        </AnchorPane>
+                     </content>
+                  </Tab>
+                  <Tab fx:id="TabInfo" text="Вкладка для Info">
+                     <content>
+                        <AnchorPane fx:id="AnchorInfo" minHeight="0.0" minWidth="0.0" prefHeight="376.0" prefWidth="137.0">
+                           <children>
+                              <Button layoutX="14.0" layoutY="339.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="221.0" style="-fx-background-radius: 10;" text="Добавить в Корзину" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" />
                            </children>
                         </AnchorPane>
                      </content>
@@ -103,11 +105,21 @@
       </AnchorPane>
       <AnchorPane fx:id="AnchorButton" layoutX="14.0" layoutY="395.0" prefHeight="90.0" prefWidth="240.0" style="-fx-border-color: #FFFFFF;" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0">
          <children>
-            <Button fx:id="okB" layoutX="148.0" layoutY="9.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="78.0" style="-fx-background-radius: 10;" text=" Ок" AnchorPane.bottomAnchor="48.0" AnchorPane.leftAnchor="145.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0" />
-            <Button fx:id="cancelB" layoutX="148.0" layoutY="48.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="78.0" style="-fx-background-radius: 10;" text="Отмена" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="145.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="48.0" />
+            <Button fx:id="placeyourorderButton" layoutX="76.0" layoutY="7.0" mnemonicParsing="false" onAction="#PlaceYourOrder" prefHeight="35.0" prefWidth="159.0" style="-fx-background-radius: 10;" text="Оформить заказ" AnchorPane.bottomAnchor="49.0" AnchorPane.leftAnchor="75.0" AnchorPane.rightAnchor="6.0" AnchorPane.topAnchor="6.0" />
+            <Button fx:id="canceltheorderButton" layoutX="78.0" layoutY="50.0" mnemonicParsing="false" onAction="#CancelTheOrder" prefHeight="35.0" prefWidth="157.0" style="-fx-background-radius: 10;" text="Отмена все покупки" AnchorPane.bottomAnchor="6.0" AnchorPane.leftAnchor="77.0" AnchorPane.rightAnchor="6.0" AnchorPane.topAnchor="49.0" />
             <Button fx:id="exitB" layoutX="4.0" layoutY="6.0" mnemonicParsing="false" prefHeight="78.0" prefWidth="28.0" style="-fx-background-radius: 10;" text="&lt;" />
          </children>
       </AnchorPane>
       <Button fx:id="countButtonlable" cacheShape="false" centerShape="false" focusTraversable="false" layoutX="717.0" layoutY="5.0" mnemonicParsing="false" prefHeight="13.0" prefWidth="37.0" style="-fx-background-color: transperent 10; -fx-border-radius: 10; -fx-border-color: #FFFFFF;" text="0" AnchorPane.rightAnchor="46.0" AnchorPane.topAnchor="5.0" />
+      <Label layoutX="440.0" layoutY="52.0" prefHeight="35.0" prefWidth="200.0" text="Общая стоимость покупок(₽) :" textFill="#1a82db">
+         <font>
+            <Font name="Calibri Bold" size="15.0" />
+         </font>
+      </Label>
+      <Label fx:id="TotalPrice" layoutX="639.0" layoutY="51.0" prefHeight="35.0" prefWidth="109.0">
+         <font>
+            <Font name="Calibri" size="22.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

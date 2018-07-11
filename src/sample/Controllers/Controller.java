@@ -1,9 +1,5 @@
 package sample.Controllers;
 
-import com.jfoenix.controls.JFXBadge;
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXPasswordField;
-import com.jfoenix.controls.JFXTextField;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -38,6 +34,7 @@ public class Controller {
         String fromPwd = password.getText();
         String fromLogin = login.getText();
 
+
         if(!fromLogin.isEmpty()&&!fromPwd.isEmpty()) {
             SQLiteAdapter sqLiteAdapter = new SQLiteAdapter();
 
@@ -59,7 +56,7 @@ public class Controller {
                 Stage stage = (Stage) enter.getScene().getWindow();
                 stage.close();
 
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../fxml/AdminProdDB2.fxml"));
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../fxml/AdminProdDB.fxml"));
                 Parent root1 = null;
                 try {
                     root1 = fxmlLoader.load();
@@ -95,6 +92,9 @@ public class Controller {
                 Scene scene = new Scene(root1);
                 stage.setScene(scene);
                 stage.show();
+
+                UserController uc = fxmlLoader.getController();
+                uc.setIduser(userId);
             }
         }
     }
@@ -103,7 +103,7 @@ public class Controller {
     }
 
     public void ClickEnter() {
-       Click();
+        Click();
     }
     public  void escapeButton(){
         Stage stage = (Stage) login.getScene().getWindow();
@@ -112,6 +112,3 @@ public class Controller {
 
 
 }
-
-
-

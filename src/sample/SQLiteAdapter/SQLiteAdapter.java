@@ -155,6 +155,25 @@ public class SQLiteAdapter {
         }
 
     }
+    public void countproduct(String str,int[] countp) {
+        // ArrayList<String> list = new ArrayList<>();
+        if (baseOk) {
+            String query = str;
+            try {
+                Statement statement = connection.createStatement();
+                resultSet = statement.executeQuery(query);
+                //int count = resultSet.getMetaData().getColumnCount();
+                for (int i = 1; i <= 1; i++) {
+                    countp[0] = Integer.parseInt(resultSet.getString(i));
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            } finally {
+                closeConnetion();
+            }
+        }
+
+    }
 
 
 }
